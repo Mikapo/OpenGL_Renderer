@@ -148,7 +148,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="source\Cube.cpp" />
+    <ClCompile Include="source\Rendering\Material.cpp" />
+    <ClCompile Include="source\Rendering\Cube_buffers.cpp" />
+    <ClCompile Include="source\Mesh.cpp" />
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\UI\Elements\Button.cpp" />
     <ClCompile Include="source\UI\Elements\Combo_box.cpp" />
@@ -166,8 +168,12 @@
     <ClCompile Include="source\Training_window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\Cube.h" />
+    <ClInclude Include="source\Rendering\Material.h" />
+    <ClInclude Include="source\Rendering\Buffers.h" />
+    <ClInclude Include="source\Rendering\Cube_buffers.h" />
+    <ClInclude Include="source\Mesh.h" />
     <ClInclude Include="source\Dimensions.h" />
+    <ClInclude Include="source\Transform.h" />
     <ClInclude Include="source\UI\Elements\Combo_box.h" />
     <ClInclude Include="source\UI\Elements\Button.h" />
     <ClInclude Include="source\glm\common.hpp" />

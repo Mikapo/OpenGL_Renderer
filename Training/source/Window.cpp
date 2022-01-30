@@ -42,7 +42,8 @@ void Window::init()
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
     glewInit();
-   
+    glEnable(GL_DEPTH_TEST);
+    get_deltatime();
 }
 
 void Window::cleanup() 
@@ -55,10 +56,20 @@ void Window::render_loop()
 {
     while (!glfwWindowShouldClose(window) && has_started)
     {
+        glDepthMask(GL_TRUE);
+        glClear(GL_DEPTH_BUFFER_BIT);
         glClear(GL_COLOR_BUFFER_BIT);
         glClearColor(background_color.R, background_color.B, background_color.G, background_color.A);
-        update();
+        update(get_deltatime());
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
+}
+
+double Window::get_deltatime()
+{
+    auto time = std::chrono::high_resolution_clock::now();
+    auto time_passed = time - time_since_last_frame;
+    time_since_last_frame = time;
+    return time_passed.count() * 0.000000001;
 }

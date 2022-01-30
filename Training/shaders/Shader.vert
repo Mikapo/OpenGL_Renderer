@@ -1,15 +1,22 @@
-
 #version 330 core
+// Do not use any version older than 330!
 
-layout(location = 0) in vec3 position;
-layout(location = 1) in vec4 color;
+// Inputs
+layout (location = 0) in vec3 position;
+layout (location = 1) in vec3 normal; 
 
-uniform mat4 u_mvp;
+// Extra outputs, if any
+out vec4 myvertex;
+out vec3 mynormal;
 
-out vec4 vert_color;
+// Uniform variables
+uniform mat4 projection;
+uniform mat4 modelview; 
 
 void main() 
-{ 
-    gl_Position = u_mvp * vec4(position, 1);
-    vert_color = color;
-};
+{
+    gl_Position = projection * modelview * vec4(position, 1.0f);
+    mynormal = mat3(transpose(inverse(modelview))) * normal; 
+
+    myvertex = modelview * vec4(position, 1.0f); 
+}

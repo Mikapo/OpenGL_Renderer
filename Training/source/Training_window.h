@@ -3,7 +3,8 @@
 #include "Window.h"
 
 #include "Rendering/Renderer.h"
-#include "Cube.h"
+#include "Mesh.h"
+#include <memory>
 
 class Training_window : public Window
 {
@@ -13,8 +14,8 @@ public:
 protected:
     void init() override;
     void cleanup() override;
-    void update() override;
+    void update(double deltatime) override;
 
 private:
-    Cube cube;
+    std::unique_ptr<Mesh> cube;
 };

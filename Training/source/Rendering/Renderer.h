@@ -15,6 +15,6 @@ struct point2d
 class Renderer
 {
 public:
-    void draw(const class vertex_array& va, const class index_buffer& ib, const class Shader& shader) const;
+    void draw(const class vertex_array* va, const class index_buffer* ib, const class Shader* shader) const;
     void clear() const;
 };

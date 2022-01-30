@@ -33,6 +33,12 @@ void Shader::set_uniform2f(const std::string& name, float v1, float v2) const
     glUniform2f(location, v1, v2);
 }
 
+void Shader::set_uniform1f(const std::string& name, float v1) const
+{
+    int location = get_uniform_location(name);
+    glUniform1f(location, v1);
+}
+
 void Shader::set_uniform1i(const std::string& name, int v1) const
 {
     int location = get_uniform_location(name);
