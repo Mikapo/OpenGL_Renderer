@@ -17,11 +17,21 @@ public:
 	void set_transform(Transform new_transform) override;
 	void set_location(glm::vec3 new_location) override;
 	void set_rotation(Rotator new_rotation) override;
+	void add_local_offset(glm::vec3 offset) override;
+
+	void set_aspect_ratio(float new_ratio) { aspect_ratio = new_ratio; update_matrices(); }
+	void set_fow_angle(float new_angle) { fow_angle = new_angle; update_matrices(); }
+	void set_min_clip(float new_min_clip) { min_clip = new_min_clip; update_matrices(); }
+	void set_max_clip(float new_max_clip) { max_clip = new_max_clip; update_matrices(); }
 
 private:
 	void update_matrices();
 
 	glm::mat4 view;
 	glm::mat4 projection;
+	float aspect_ratio = 1.0f;
+	float fow_angle = 30.0f;
+	float min_clip = 0.001f;
+	float max_clip = 300.0f;
 };
 

@@ -3,6 +3,13 @@
 #include "glm/ext/matrix_transform.hpp"
 
 
+void Object::add_local_offset(glm::vec3 offset)
+{
+	transform.translation += forward_vector * offset.y;
+	transform.translation += up_vector * offset.z;
+	transform.translation += right_vector * offset.x;
+}
+
 void Object::update_directional_vectors()
 {
 	glm::mat4 identity(1);

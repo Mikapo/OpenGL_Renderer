@@ -4,6 +4,7 @@
 
 #include "GLFW/glfw3.h"
 #include "GLFW/glfw3native.h"
+#include <iostream>;
 
 void Window::start()
 {
@@ -27,6 +28,11 @@ Dimensions Window::get_window_dimensions() const
     return dimensions;
 }
 
+float Window::get_delta_seconds() const
+{
+    return deltatime;
+}
+
 void Window::init() 
 {
     glfwInit();
@@ -43,7 +49,21 @@ void Window::init()
     glfwMakeContextCurrent(window);
     glewInit();
     glEnable(GL_DEPTH_TEST);
-    get_deltatime();
+    update_deltatime();
+    glfwSetWindowUserPointer(get_window(), this);
+
+    auto on_key = [](GLFWwindow* window, int key, int scancode, int action, int mods)
+    {
+        static_cast<Window*>(glfwGetWindowUserPointer(window))->on_key_pressed(window, key, scancode, action, mods);
+    };
+    glfwSetKeyCallback(get_window(), on_key);
+
+    auto on_resize = [](GLFWwindow* window, int new_width, int new_height)
+    {
+        static_cast<Window*>(glfwGetWindowUserPointer(window))->on_window_resize(window, new_width, new_height);
+    };
+    glfwSetWindowSizeCallback(get_window(), on_resize);
+       
 }
 
 void Window::cleanup() 
@@ -60,16 +80,17 @@ void Window::render_loop()
         glClear(GL_DEPTH_BUFFER_BIT);
         glClear(GL_COLOR_BUFFER_BIT);
         glClearColor(background_color.R, background_color.B, background_color.G, background_color.A);
-        update(get_deltatime());
+        update_deltatime();
+        update(deltatime);
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 }
 
-double Window::get_deltatime()
+void Window::update_deltatime()
 {
     auto time = std::chrono::high_resolution_clock::now();
     auto time_passed = time - time_since_last_frame;
     time_since_last_frame = time;
-    return time_passed.count() * 0.000000001;
+    deltatime = time_passed.count() * 0.000000001;
 }

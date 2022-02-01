@@ -4,6 +4,7 @@
 #include "glm/ext/matrix_clip_space.hpp"
 
 #include "World.h"
+#include <iostream>
 
 void Camera::set_transform(Transform new_transform)
 {
@@ -23,8 +24,19 @@ void Camera::set_rotation(Rotator new_rotation)
     update_matrices();
 }
 
+void Camera::add_local_offset(glm::vec3 offset)
+{
+    super::add_local_offset(offset);
+    update_matrices();
+}
+
 void Camera::update_matrices()
 {
-   view = glm::lookAt(get_location(), get_location() + get_forward_vector(), get_up_vector());
-   projection = glm::perspective(glm::radians(30.0f), 1.0f, 1.0f, 300.0f);
+    glm::vec3 cam_pos = get_location();
+    glm::vec3 cam_norm = get_forward_vector();
+    glm::vec3 cam_up = get_up_vector();
+
+    view = glm::lookAt(cam_pos,cam_pos + cam_norm, cam_up);
+
+    projection = glm::perspective(glm::radians(fow_angle), aspect_ratio, min_clip, max_clip);
 }

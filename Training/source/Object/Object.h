@@ -18,6 +18,7 @@ public:
 	virtual void set_rotation(Rotator new_rotation) { update_directional_vectors();  transform.rotation = new_rotation; }
 	glm::vec3 get_scale() const { return transform.scale; }
 	virtual void set_scale(glm::vec3 new_scale) { transform.scale = new_scale; }
+	virtual void add_local_offset(glm::vec3 offset);
 
 	glm::vec3 get_forward_vector() const { return forward_vector; }
 	glm::vec3 get_up_vector() const { return up_vector; }
