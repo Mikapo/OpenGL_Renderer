@@ -148,8 +148,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\Object\Light.cpp" />
     <ClCompile Include="source\Object\Mesh_object.cpp" />
-    <ClCompile Include="source\Rendering\Shader_compiler.cpp" />
+    <ClCompile Include="source\Shader_compiler.cpp" />
     <ClCompile Include="source\Object\Camera.cpp" />
     <ClCompile Include="source\Object\Object.cpp" />
     <ClCompile Include="source\Rendering\Material.cpp" />
@@ -173,8 +174,9 @@
     <ClCompile Include="source\World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source\Object\Light.h" />
     <ClInclude Include="source\Object\Mesh_object.h" />
-    <ClInclude Include="source\Rendering\Shader_compiler.h" />
+    <ClInclude Include="source\Shader_compiler.h" />
     <ClInclude Include="source\Object\Camera.h" />
     <ClInclude Include="source\Object\Object.h" />
     <ClInclude Include="source\Rendering\Material.h" />

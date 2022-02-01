@@ -14,3 +14,4 @@ std::shared_ptr<Shader> Shader_compiler::get(const std::string& frag_path, const
 		return temp;
 	}
 }
+

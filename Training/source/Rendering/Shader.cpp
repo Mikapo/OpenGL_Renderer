@@ -1,5 +1,4 @@
 #include "Shader.h"
-#include "Renderer.h"
 
 #include <fstream>
 #include <iostream>
@@ -25,6 +24,18 @@ void Shader::set_uniform4f(const std::string& name, float v1, float v2, float v3
 {
     int location = get_uniform_location(name);
     glUniform4f(location, v1, v2, v3, v4);
+}
+
+void Shader::set_uniform4fv(const std::string& name, int count, float* v) const
+{
+    int location = get_uniform_location(name);
+    glUniform4fv(location, count, v);
+}
+
+void Shader::set_uniform3fv(const std::string& name, int count, float* v) const
+{
+    int location = get_uniform_location(name);
+    glUniform3fv(location, count, v);
 }
 
 void Shader::set_uniform2f(const std::string& name, float v1, float v2) const 

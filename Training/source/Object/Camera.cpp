@@ -25,6 +25,6 @@ void Camera::set_rotation(Rotator new_rotation)
 
 void Camera::update_matrices()
 {
-   view = glm::lookAt(get_location(), glm::vec3(0, 0, 0), get_up_vector());
+   view = glm::lookAt(get_location(), get_location() + get_forward_vector(), get_up_vector());
    projection = glm::perspective(glm::radians(30.0f), 1.0f, 1.0f, 300.0f);
 }

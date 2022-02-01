@@ -1,16 +1,16 @@
 #version 330 core
 // Do not use any version older than 330!
 
+#define MAX_LIGHT_AMOUNT 10
+
 in vec4 myvertex;
 in vec3 mynormal;
 
 out vec4 fragColor;
 
-uniform vec3 light0dirn; 
-uniform vec4 light0color; 
-
-uniform vec4 light1posn; 
-uniform vec4 light1color; 
+uniform int lightamount;
+uniform vec4 lightpos [MAX_LIGHT_AMOUNT]; 
+uniform vec4 lightcolor [MAX_LIGHT_AMOUNT];  
 
 uniform vec4 ambient; 
 uniform vec4 diffuse; 
@@ -42,16 +42,17 @@ void main()
         // Compute normal, needed for shading. 
         vec3 normal = normalize(mynormal); 
 
-        // Light 0, directional
-        vec3 direction0 = normalize (light0dirn) ; 
-        vec3 half0 = normalize (direction0 + eyedirn) ; 
-        vec4 col0 = ComputeLight(direction0, light0color, normal, half0, diffuse, specular, shininess);
-
+   
           // Light 1, point 
-        vec3 position = light1posn.xyz / light1posn.w ; 
-        vec3 direction1 = normalize (position - mypos) ; // no attenuation 
-        vec3 half1 = normalize (direction1 + eyedirn) ;  
-        vec4 col1 = ComputeLight(direction1, light1color, normal, half1, diffuse, specular, shininess) ;
+
+        vec4 final_light_color = vec4(0, 0, 0, 1);
+        for(int i = 0; i < lightamount; i++)
+        {
+            vec3 position = lightpos[i].xyz / lightpos[i].w ; 
+            vec3 direction1 = normalize (position - mypos) ; // no attenuation 
+            vec3 half1 = normalize (direction1 + eyedirn) ;  
+            final_light_color =+ ComputeLight(direction1, lightcolor[i], normal, half1, diffuse, specular, shininess) ;
+        }
         
-        fragColor = ambient + col0 + col1;
+        fragColor = ambient + final_light_color;
 }

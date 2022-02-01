@@ -22,7 +22,5 @@ public:
 
 private:
 	std::shared_ptr<Shader> shader;
-
-	void update_lighting();
 };
 
