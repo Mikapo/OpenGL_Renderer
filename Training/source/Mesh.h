@@ -7,21 +7,30 @@
 #include "Rendering/Buffers.h"
 #include <memory>
 
+class Mesh_object;
+class World;
 class Mesh
 {
 public:
-	Mesh(std::shared_ptr<Buffers> geometry, Material material)
-		: geometry(geometry), material(material) {}
+	Mesh(World* world, std::shared_ptr<Buffers> geometry, Material material)
+		: world(world), geometry(geometry), material(material) {}
 
 	void render();
-	void set_rotation(Rotator new_rotation);
-	void set_location(glm::vec3 new_location);
-	void set_scale(glm::vec3 new_rotation);
-	glm::vec3 get_location() { return relative_transform.translation; }
-	Rotator get_rotation() { return relative_transform.rotation; }
-	glm::vec3 get_scale() { return relative_transform.scale; }
+	void set_relative_rotation(Rotator new_rotation) { relative_transform.rotation = new_rotation; }
+	void set_relative_location(glm::vec3 new_location) { relative_transform.translation = new_location; }
+	void set_relative_scale(glm::vec3 new_scale) { relative_transform.scale = new_scale; }
+	void set_relative_transform(Transform new_transform) { relative_transform = new_transform; }
+	void set_owner(Mesh_object* new_owner) { owner = new_owner; }
+	glm::vec3 get_relative_location() { return relative_transform.translation; }
+	Rotator get_relative_rotation() { return relative_transform.rotation; }
+	glm::vec3 get_relative_scale() { return relative_transform.scale; }
+	
 
 private:
+	glm::mat4 calculate_model_matrix(Transform transform);
+
+	World* world;
+	Mesh_object* owner;
 	Renderer renderer;
 	std::shared_ptr<Buffers> geometry;
 	Material material;

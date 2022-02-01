@@ -148,6 +148,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\Object\Mesh_object.cpp" />
+    <ClCompile Include="source\Rendering\Shader_compiler.cpp" />
+    <ClCompile Include="source\Object\Camera.cpp" />
+    <ClCompile Include="source\Object\Object.cpp" />
     <ClCompile Include="source\Rendering\Material.cpp" />
     <ClCompile Include="source\Rendering\Cube_buffers.cpp" />
     <ClCompile Include="source\Mesh.cpp" />
@@ -166,8 +170,13 @@
     <ClCompile Include="source\UI\UI_observer.cpp" />
     <ClCompile Include="source\UI\UI_event_handler.cpp" />
     <ClCompile Include="source\Training_window.cpp" />
+    <ClCompile Include="source\World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source\Object\Mesh_object.h" />
+    <ClInclude Include="source\Rendering\Shader_compiler.h" />
+    <ClInclude Include="source\Object\Camera.h" />
+    <ClInclude Include="source\Object\Object.h" />
     <ClInclude Include="source\Rendering\Material.h" />
     <ClInclude Include="source\Rendering\Buffers.h" />
     <ClInclude Include="source\Rendering\Cube_buffers.h" />
@@ -475,6 +484,7 @@
     <ClInclude Include="source\UI\UI_observer.h" />
     <ClInclude Include="source\UI\UI_event_handler.h" />
     <ClInclude Include="source\Training_window.h" />
+    <ClInclude Include="source\World.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\Shader.vex" />

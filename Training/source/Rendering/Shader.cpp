@@ -87,7 +87,7 @@ unsigned int Shader::compile_shader(unsigned int type, const std::string& source
         std::cout << "failed to compile shader!" << std::endl;
         std::cout << message;
         glDeleteShader(id);
-        return 0;
+        throw 1;
     }
 
     return id;

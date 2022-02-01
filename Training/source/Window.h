@@ -28,7 +28,7 @@ public:
     Dimensions get_window_dimensions() const;
 
 protected:
-    virtual void update(double deltatime) = 0;
+    virtual void update(float deltatime) = 0;
     virtual void init();
     virtual void cleanup();
 

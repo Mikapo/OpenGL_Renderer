@@ -17,14 +17,12 @@ public:
 	glm::vec4 specular = { 5.0f, 5.0f, 5.0f, 1.0f };
 	float shininess = 200.0f;
 
-	void update_shader(Transform object_transform);
+	void update_shader(glm::mat4 modelview, glm::mat4 projection);
 	Shader* get_shader() const { return shader.get(); }
 
 private:
 	std::shared_ptr<Shader> shader;
 
-	void update_transform(glm::mat4 modelview);
 	void update_lighting();
-	glm::mat4 calculate_model_view_matrix(Transform object_transfrom);
 };
 

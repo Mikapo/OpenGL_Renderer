@@ -5,6 +5,7 @@
 #include "Rendering/Renderer.h"
 #include "Mesh.h"
 #include <memory>
+#include "World.h"
 
 class Training_window : public Window
 {
@@ -14,8 +15,9 @@ public:
 protected:
     void init() override;
     void cleanup() override;
-    void update(double deltatime) override;
+    void update(float deltatime) override;
 
 private:
-    std::unique_ptr<Mesh> cube;
+    World world;
+    std::shared_ptr<Mesh_object> cube;
 };
