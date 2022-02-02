@@ -10,13 +10,17 @@
 class Training_window : public Window
 {
 public:
-    Training_window() : Window("training") {}
+    Training_window() : Window("OpenGl Renderer") {}
 
 protected:
     void init() override;
     void cleanup() override;
     void update(float deltatime) override; 
-    void on_key_pressed(GLFWwindow* window, int key, int scancode, int action, int mods) override;
+
+    void move_camera_right(float value);
+    void move_camera_forward(float value);
+    void rotate_camera(float value);
+
     void on_window_resize(GLFWwindow* window, int new_width, int new_height) override;
     World* get_world() { return &world; }
 private:

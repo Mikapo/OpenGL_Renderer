@@ -1,10 +1,8 @@
 #include "Window.h"
 
-#include "glew.h"
-
 #include "GLFW/glfw3.h"
 #include "GLFW/glfw3native.h"
-#include <iostream>;
+#include <iostream>
 
 void Window::start()
 {
@@ -49,12 +47,18 @@ void Window::init()
     glfwMakeContextCurrent(window);
     glewInit();
     glEnable(GL_DEPTH_TEST);
+    glfwSwapInterval(1);
     update_deltatime();
     glfwSetWindowUserPointer(get_window(), this);
 
     auto on_key = [](GLFWwindow* window, int key, int scancode, int action, int mods)
     {
-        static_cast<Window*>(glfwGetWindowUserPointer(window))->on_key_pressed(window, key, scancode, action, mods);
+        if (action == GLFW_PRESS)
+            static_cast<Window*>(glfwGetWindowUserPointer(window))->input_handler.on_key_event(key, action);
+
+        else if (action == GLFW_RELEASE)
+            static_cast<Window*>(glfwGetWindowUserPointer(window))->input_handler.on_key_event(key, action);
+
     };
     glfwSetKeyCallback(get_window(), on_key);
 
@@ -80,6 +84,7 @@ void Window::render_loop()
         glClear(GL_DEPTH_BUFFER_BIT);
         glClear(GL_COLOR_BUFFER_BIT);
         glClearColor(background_color.R, background_color.B, background_color.G, background_color.A);
+        input_handler.update();
         update_deltatime();
         update(deltatime);
         glfwSwapBuffers(window);

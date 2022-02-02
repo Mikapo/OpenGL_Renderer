@@ -17,11 +17,11 @@ public:
 
 	void render();
 	void set_relative_rotation(Rotator new_rotation) { relative_transform.rotation = new_rotation; }
-	void set_relative_location(glm::vec3 new_location) { relative_transform.translation = new_location; }
+	void set_relative_location(glm::vec3 new_location) { relative_transform.location = new_location; }
 	void set_relative_scale(glm::vec3 new_scale) { relative_transform.scale = new_scale; }
 	void set_relative_transform(Transform new_transform) { relative_transform = new_transform; }
 	void set_owner(Mesh_object* new_owner) { owner = new_owner; }
-	glm::vec3 get_relative_location() { return relative_transform.translation; }
+	glm::vec3 get_relative_location() { return relative_transform.location; }
 	Rotator get_relative_rotation() { return relative_transform.rotation; }
 	glm::vec3 get_relative_scale() { return relative_transform.scale; }
 	

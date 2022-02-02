@@ -9,7 +9,16 @@ class Camera : public Object
 public:
 	using super = Object;
 
-	Camera(World* world) : Object(world) { update_matrices(); }
+	Camera(World* world, Transform transform) 
+		: Object(world, transform), camera_transform(transform)
+	{
+		update_matrices(); 
+	}
+
+	void init() override;
+	void update(float deltatime) override;
+
+	void lerp_transform(float deltatime);
 
 	glm::mat4 get_view_matrix() const { return view; };
 	glm::mat4 get_projection_matrix() const { return projection; };
@@ -27,6 +36,7 @@ public:
 private:
 	void update_matrices();
 
+	Transform camera_transform;
 	glm::mat4 view;
 	glm::mat4 projection;
 	float aspect_ratio = 1.0f;

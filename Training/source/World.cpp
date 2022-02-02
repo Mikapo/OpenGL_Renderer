@@ -7,13 +7,18 @@ void World::init()
   
 }
 
+void World::update(float deltatime)
+{
+    camera->update(deltatime);
+}
+
 void World::render()
 {
     for (auto object : mesh_objects)
         object->render();
 }
 
-void World::on_lighting_change(Light* light)
+void World::update_lighting()
 {
     std::vector<float> light_pos;
     std::vector<float> light_color;
@@ -25,10 +30,11 @@ void World::on_lighting_change(Light* light)
         light_color.push_back(light->get_color().b);
         light_color.push_back(light->get_color().a);
 
-        light_pos.push_back(light->get_location().x);
-        light_pos.push_back(light->get_location().y);
-        light_pos.push_back(light->get_location().z);
-        light_pos.push_back(1.0f);
+        glm::vec4 current_light_pos = get_camera_view_matrix() * glm::vec4(light->get_location(), 1);
+        light_pos.push_back(current_light_pos.x);
+        light_pos.push_back(current_light_pos.y);
+        light_pos.push_back(current_light_pos.z);
+        light_pos.push_back(current_light_pos.w);
     }
 
     auto shaders = Shader_compiler::get_current_shaders();
@@ -59,8 +65,7 @@ glm::mat4 World::get_camera_projection_matrix()
 
 std::shared_ptr<Camera> World::spawn_camera(Transform transform)
 {
-    this->camera.reset(new Camera(this));
-    camera->set_transform(transform);
+    this->camera.reset(new Camera(this, transform));
     return this->camera;
 }
 

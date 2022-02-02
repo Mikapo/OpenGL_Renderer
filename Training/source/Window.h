@@ -2,8 +2,10 @@
 
 #include "Dimensions.h"
 
+#include "glew.h"
 #include <string>
 #include <chrono>
+#include "Input_handler.h"
 
 struct Color
 {
@@ -28,13 +30,14 @@ public:
     Dimensions get_window_dimensions() const;
     float get_delta_seconds() const;
 
-    virtual void on_key_pressed(GLFWwindow* window, int key, int scancode, int action, int mods) {};
     virtual void on_window_resize(GLFWwindow* window, int new_width, int new_height) {};
 
 protected:
     virtual void update(float deltatime) {};
     virtual void init();
     virtual void cleanup();
+
+    Input_handler input_handler;
 
 private:
     void render_loop();

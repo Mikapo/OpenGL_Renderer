@@ -37,7 +37,7 @@ glm::mat4 Mesh::calculate_model_matrix(Transform transform)
 	glm::mat4 rotation = roll * yaw * pitch;
 
 	glm::mat4 scale = glm::scale(identity, transform.scale);
-	glm::mat4 translation = glm::translate(identity, transform.translation);
+	glm::mat4 translation = glm::translate(identity, transform.location);
 	glm::mat4 model = translation * scale * rotation;
 
 	return model;
