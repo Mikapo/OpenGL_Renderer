@@ -27,7 +27,7 @@ public:
 	
 
 private:
-	glm::mat4 calculate_model_matrix(Transform transform);
+	glm::mat4 calculate_model_matrix(Transform transform) const;
 
 	World* world;
 	Mesh_object* owner;

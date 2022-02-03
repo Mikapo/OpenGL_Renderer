@@ -9,7 +9,6 @@
 #include <array>
 #include <iostream>
 
-
 void Mesh::render() const
 {
 	glm::mat4 world_model = calculate_model_matrix(owner->get_transform());
@@ -21,10 +20,10 @@ void Mesh::render() const
 	glm::mat4 modelview = view * model;
 
 	material.update_shader(modelview, projection);
-	renderer.draw(geometry->va.get(), geometry->ib.get(), material.get_shader());
+	renderer.draw(&geometry->va, &geometry->ib, material.get_shader());
 }
 
-glm::mat4 Mesh::calculate_model_matrix(Transform transform)
+glm::mat4 Mesh::calculate_model_matrix(Transform transform) const
 {
 	if (!owner)
 		throw(1);
@@ -38,7 +37,7 @@ glm::mat4 Mesh::calculate_model_matrix(Transform transform)
 
 	glm::mat4 scale = glm::scale(identity, transform.scale);
 	glm::mat4 translation = glm::translate(identity, transform.location);
-	glm::mat4 model = translation * scale * rotation;
+	glm::mat4 model = translation * rotation * scale;
 
 	return model;
 }

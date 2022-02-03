@@ -13,6 +13,8 @@ void Training_window::init()
 	world.init();
 	init_objects();
 	setup_inputs();
+
+	Buffer_factory::get_from_file("../cube.obj");
 }
 
 void Training_window::setup_inputs()
@@ -37,15 +39,7 @@ void Training_window::cleanup()
 
 void Training_window::update(float deltatime)
 {
-	static float x = 0;
-	x += 5.0f * deltatime;
-	float offset = 0.1 * glm::sin(0.5 * x);
-	glm::vec3 location = second_cube->get_location();
-	location.z = offset;
-	second_cube->set_location(location);
-
-	cube->add_rotation_offset(Rotator(0.0f, 1.0f, 0.0f) * deltatime);
-
+	model->add_rotation_offset(Rotator(0.0f, 1.0f, 0.0f) * deltatime);
 	world.update(deltatime);
 }
 
@@ -91,25 +85,16 @@ void Training_window::init_objects()
 	camera_transform.location = { 0.0f, -2.0f, 0.0f };
 	world.spawn_camera(camera_transform);
 
-	Transform cube_transform;
-	cube_transform.scale = { 0.25f, 0.25f, 0.25f };
-	cube = world.spawn_mesh_object(cube_transform);;
-
-	Transform cube_transform2;
-	cube_transform2.location = { -0.5f, 0.0f, 0.0f };
-	cube_transform2.scale = { 0.25f, 0.25f, 0.25f };
-	second_cube = world.spawn_mesh_object(cube_transform2);
-
-	Transform floor_transform;
-	floor_transform.location = { 0.0f, 0.0f, -0.5f };
-	floor_transform.scale = { 7.0f, 30.0f, 0.1f };
-	auto floor = world.spawn_mesh_object(floor_transform);
+	Transform model_transform;
+	model_transform.scale = { 0.25f, 0.25f, 0.25f };
+	model_transform.rotation = { 90.0f, 0.0f, 0.0f };
+	model = world.spawn_mesh_object(model_transform);
 
 	std::shared_ptr<Shader> shader = Shader_compiler::get("shaders/shader.frag", "shaders/Shader.vert");
 	Material material(shader);
-	cube->add_mesh(Buffer_factory::get(Buffer_type::Cube), material);
-	second_cube->add_mesh(Buffer_factory::get(Buffer_type::Cube), material);
-	floor->add_mesh(Buffer_factory::get(Buffer_type::Cube), material);
+	material.ambient = { 0.25f, 0.25f, 0.25f, 1.0f };
+	model->add_mesh(Buffer_factory::get_from_file("../Zucche2.obj", 0), material);
+	model->add_mesh(Buffer_factory::get_from_file("../Zucche2.obj", 1), material);
 
 	Transform light_transform;
 	light_transform.location = { 0.0f, -3.0f, 0.0f };

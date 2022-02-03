@@ -29,6 +29,5 @@ private:
     void init_objects();
 
     World world;
-    std::shared_ptr<Mesh_object> cube;
-    std::shared_ptr<Mesh_object> second_cube;
+    std::shared_ptr<Mesh_object> model;
 };

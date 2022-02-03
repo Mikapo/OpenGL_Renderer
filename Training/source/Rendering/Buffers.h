@@ -5,11 +5,15 @@
 
 struct Buffers
 {
-	Buffers(vertex_buffer* vb, vertex_array* va, index_buffer* ib) 
-		: vb(vb), va(va), ib(ib) {}
+	Buffers(const std::vector<float>& vertices, const std::vector<unsigned int>& indices, vertex_buffer_layout layout)
+		: vb(vertices.data(), sizeof(float) * vertices.size()), 
+		  ib(indices.data(), indices.size())
+	{
+		va.add_buffer(vb, layout);
+	}
 
-	std::unique_ptr<vertex_buffer> vb;
-	std::unique_ptr<vertex_array> va;
-	std::unique_ptr<index_buffer> ib;
+	vertex_buffer vb;
+	vertex_array va;
+	index_buffer ib;
 };
 

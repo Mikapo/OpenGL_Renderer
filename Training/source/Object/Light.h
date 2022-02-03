@@ -17,6 +17,6 @@ public:
 
 	glm::vec4 get_color() const { return color; }
 private:
-	glm::vec4 color = { 1.0f, 0.0f, 0.0f, 1.0f };
+	glm::vec4 color = { 0.6f, 0.5f, 0.5f, 1.0f };
 };
 
