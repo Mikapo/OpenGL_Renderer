@@ -20,20 +20,24 @@ struct Rotator
 	{
 		return Rotator(pitch + other.pitch, yaw + other.yaw, roll + other.roll);
 	}
+	Rotator operator* (float value)
+	{
+		return Rotator(pitch * value, yaw * value, roll * value);
+	}
 
 	float difference(const Rotator& other)
 	{
 		float pitch_difference = pitch - other.pitch;
 		if (pitch_difference < 0)
-			pitch_difference *= 1;
+			pitch_difference *= -1;
 
 		float yaw_difference = yaw - other.yaw;
 		if (yaw_difference < 0)
-			yaw_difference *= 1;
+			yaw_difference *= -1;
 
 		float roll_difference = roll - other.roll;
 		if (roll_difference < 0)
-			roll_difference *= 1;
+			roll_difference *= -1;
 
 		return pitch_difference + yaw_difference + roll_difference;
 	}

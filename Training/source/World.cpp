@@ -12,13 +12,15 @@ void World::update(float deltatime)
     camera->update(deltatime);
 }
 
-void World::render()
+void World::render() const
 {
+    update_lighting();
+
     for (auto object : mesh_objects)
         object->render();
 }
 
-void World::update_lighting()
+void World::update_lighting() const
 {
     std::vector<float> light_pos;
     std::vector<float> light_color;
@@ -47,7 +49,7 @@ void World::update_lighting()
     }
 }
 
-glm::mat4 World::get_camera_view_matrix()
+glm::mat4 World::get_camera_view_matrix() const
 {
     if (camera)
         return camera->get_view_matrix();
@@ -55,7 +57,7 @@ glm::mat4 World::get_camera_view_matrix()
         return glm::mat4(1);
 }
 
-glm::mat4 World::get_camera_projection_matrix()
+glm::mat4 World::get_camera_projection_matrix() const
 {
     if (camera)
         return camera->get_projection_matrix();

@@ -2,7 +2,7 @@
 
 #include "World.h"
 
-void Mesh_object::render()
+void Mesh_object::render() const
 {
 	for (auto& mesh : meshes)
 		mesh->render();

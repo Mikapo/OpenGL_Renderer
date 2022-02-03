@@ -3,7 +3,7 @@
 #include "glm/ext/matrix_transform.hpp"
 #include "glm/ext/matrix_clip_space.hpp"
 
-void Material::update_shader(glm::mat4 modelview, glm::mat4 projection)
+void Material::update_shader(glm::mat4 modelview, glm::mat4 projection) const
 {
 	shader->set_uniform4f("ambient", 0.2f, 0.0f, 0.0f, 1.0f);
 	shader->set_uniform4f("diffuse", 0.5f, 0.5f, 0.5f, 1.0f);

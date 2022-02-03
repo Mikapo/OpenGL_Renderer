@@ -4,12 +4,15 @@
 #include "GLFW/glfw3native.h"
 #include <iostream>
 
+
+
 void Window::start()
 {
     if (!has_started)
     {
         has_started = true;
         init();
+        logic_thread_handle = std::thread([this] { logic_loop(); });
         render_loop();
         cleanup();
         has_started = false;
@@ -37,6 +40,7 @@ void Window::init()
 
     /* Create a windowed mode window and its OpenGL context */
     window = glfwCreateWindow(1000, 1000, name.c_str(), NULL, NULL);
+    glfwSetWindowSizeLimits(window, 1000, 1000, 1000, 1000);
 
     if (!window)
     {
@@ -50,7 +54,12 @@ void Window::init()
     glfwSwapInterval(1);
     update_deltatime();
     glfwSetWindowUserPointer(get_window(), this);
+    setup_callbacks();
+    logic_thread_exit_flag = false;
+}
 
+void Window::setup_callbacks()
+{
     auto on_key = [](GLFWwindow* window, int key, int scancode, int action, int mods)
     {
         if (action == GLFW_PRESS)
@@ -67,16 +76,37 @@ void Window::init()
         static_cast<Window*>(glfwGetWindowUserPointer(window))->on_window_resize(window, new_width, new_height);
     };
     glfwSetWindowSizeCallback(get_window(), on_resize);
-       
 }
 
-void Window::cleanup() 
-{ 
-    glfwTerminate(); 
-    window = nullptr;
+void Window::update_deltatime()
+{
+    using namespace std::chrono;
+
+    auto time = high_resolution_clock::now();
+    auto time_passed = time - time_since_last_frame;
+    time_since_last_frame = time;
+    deltatime = time_passed.count() * 0.000000001;
 }
 
-void Window::render_loop() 
+
+void Window::logic_loop()
+{
+    using namespace std::chrono;
+
+    time_point<system_clock> frame_time = system_clock::now();
+    while (!logic_thread_exit_flag)
+    {
+        frame_time += milliseconds(1000 / 60);
+        input_handler.update();
+        update_deltatime();
+        update(deltatime);
+
+        //limit each logic thread frame to 60fps per second
+        std::this_thread::sleep_until(frame_time);
+    }
+}
+
+void Window::render_loop() const
 {
     while (!glfwWindowShouldClose(window) && has_started)
     {
@@ -84,18 +114,16 @@ void Window::render_loop()
         glClear(GL_DEPTH_BUFFER_BIT);
         glClear(GL_COLOR_BUFFER_BIT);
         glClearColor(background_color.R, background_color.B, background_color.G, background_color.A);
-        input_handler.update();
-        update_deltatime();
-        update(deltatime);
+        render();
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 }
 
-void Window::update_deltatime()
+void Window::cleanup()
 {
-    auto time = std::chrono::high_resolution_clock::now();
-    auto time_passed = time - time_since_last_frame;
-    time_since_last_frame = time;
-    deltatime = time_passed.count() * 0.000000001;
+    logic_thread_exit_flag = true;
+    logic_thread_handle.join();
+    glfwTerminate();
+    window = nullptr;
 }

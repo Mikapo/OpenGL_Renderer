@@ -17,7 +17,7 @@ public:
 	glm::vec4 specular = { 5.0f, 5.0f, 5.0f, 1.0f };
 	float shininess = 200.0f;
 
-	void update_shader(glm::mat4 modelview, glm::mat4 projection);
+	void update_shader(glm::mat4 modelview, glm::mat4 projection) const;
 	Shader* get_shader() const { return shader.get(); }
 
 private:

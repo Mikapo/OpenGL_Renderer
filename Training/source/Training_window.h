@@ -10,12 +10,14 @@
 class Training_window : public Window
 {
 public:
-    Training_window() : Window("OpenGl Renderer") {}
+    Training_window() : Window("OpenGL Renderer") {}
 
 protected:
     void init() override;
+    void setup_inputs();
     void cleanup() override;
     void update(float deltatime) override; 
+    void render() const override;
 
     void move_camera_right(float value);
     void move_camera_forward(float value);
@@ -28,4 +30,5 @@ private:
 
     World world;
     std::shared_ptr<Mesh_object> cube;
+    std::shared_ptr<Mesh_object> second_cube;
 };

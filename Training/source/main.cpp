@@ -1,6 +1,6 @@
 #include "Training_window.h"
 
-int main()
+int WinMain()
 {
 	Training_window window;
 	window.start();

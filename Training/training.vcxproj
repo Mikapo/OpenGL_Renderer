@@ -148,7 +148,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="source\Input_handler.cpp" />
     <ClCompile Include="source\Object\Light.cpp" />
     <ClCompile Include="source\Object\Mesh_object.cpp" />
     <ClCompile Include="source\Shader_compiler.cpp" />

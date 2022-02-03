@@ -10,7 +10,7 @@
 #include <iostream>
 
 
-void Mesh::render()
+void Mesh::render() const
 {
 	glm::mat4 world_model = calculate_model_matrix(owner->get_transform());
 	glm::mat4 relative_model = calculate_model_matrix(relative_transform);

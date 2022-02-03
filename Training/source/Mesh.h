@@ -15,7 +15,7 @@ public:
 	Mesh(World* world, std::shared_ptr<Buffers> geometry, Material material)
 		: world(world), geometry(geometry), material(material) {}
 
-	void render();
+	void render() const;
 	void set_relative_rotation(Rotator new_rotation) { relative_transform.rotation = new_rotation; }
 	void set_relative_location(glm::vec3 new_location) { relative_transform.location = new_location; }
 	void set_relative_scale(glm::vec3 new_scale) { relative_transform.scale = new_scale; }

@@ -12,11 +12,11 @@ class World
 public:
 	void init();
 	void update(float deltatime);
-	void render();
-	void update_lighting();
+	void render() const;
+	void update_lighting() const;
 
-	glm::mat4 get_camera_view_matrix();
-	glm::mat4 get_camera_projection_matrix();
+	glm::mat4 get_camera_view_matrix() const;
+	glm::mat4 get_camera_projection_matrix() const;
 
 	std::shared_ptr<Camera> spawn_camera(Transform transform = Transform());
 	std::shared_ptr<Mesh_object> spawn_mesh_object(Transform transform = Transform());

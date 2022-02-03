@@ -6,6 +6,7 @@
 #include <string>
 #include <chrono>
 #include "Input_handler.h"
+#include <thread>
 
 struct Color
 {
@@ -31,16 +32,20 @@ public:
     float get_delta_seconds() const;
 
     virtual void on_window_resize(GLFWwindow* window, int new_width, int new_height) {};
+    void logic_loop();
+
+    void setup_callbacks();
 
 protected:
-    virtual void update(float deltatime) {};
     virtual void init();
     virtual void cleanup();
+    virtual void update(float deltatime) {};
+    virtual void render() const {};
 
     Input_handler input_handler;
 
 private:
-    void render_loop();
+    void render_loop() const;
     void update_deltatime();
 
     GLFWwindow* window = nullptr;
@@ -49,5 +54,7 @@ private:
     Color background_color;
     std::chrono::steady_clock::time_point time_since_last_frame;
     float deltatime;
-    
+
+    std::thread logic_thread_handle;
+    bool logic_thread_exit_flag = true;
 };

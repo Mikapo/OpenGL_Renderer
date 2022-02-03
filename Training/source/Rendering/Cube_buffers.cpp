@@ -1,8 +1,8 @@
 #include "Cube_buffers.h"
 
-std::weak_ptr<Buffers> Cube_buffers::buffer;
+std::weak_ptr<Buffers> Buffer_factory::buffer;
 
-std::shared_ptr<Buffers> Cube_buffers::construct_buffers()
+std::shared_ptr<Buffers> Buffer_factory::construct_buffers()
 {
 	std::array vertices = get_vertex_data();
 	std::array indices
@@ -28,7 +28,7 @@ std::shared_ptr<Buffers> Cube_buffers::construct_buffers()
 	return std::shared_ptr<Buffers>(new Buffers(vb, va, ib));
 }
 
-std::array<float, 144> Cube_buffers::get_vertex_data()
+std::array<float, 144> Buffer_factory::get_vertex_data()
 {
 	constexpr int amount_of_vertices = 4 * 6;
 	constexpr int vertice_dimension = 3;
@@ -71,7 +71,7 @@ std::array<float, 144> Cube_buffers::get_vertex_data()
 	return output;
 }
 
-const std::shared_ptr<Buffers> Cube_buffers::get()
+const std::shared_ptr<Buffers> Buffer_factory::get(Buffer_type type)
 {
 	if (buffer.expired())
 	{
@@ -81,4 +81,9 @@ const std::shared_ptr<Buffers> Cube_buffers::get()
 	}
 	else
 		return buffer.lock();
+}
+
+const std::shared_ptr<Buffers> Buffer_factory::get_from_file(const std::string file_path)
+{
+	return std::shared_ptr<Buffers>();
 }

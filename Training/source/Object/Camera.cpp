@@ -24,7 +24,10 @@ void Camera::lerp_transform(float deltatime)
     glm::vec3 location = camera_transform.location;
     Rotator rotation = camera_transform.rotation;
 
-    if ((location - target_location).length() > 0.001 || rotation.difference(target_rotation) > 0.001)
+    float world_distance = glm::distance(location, target_location);
+    float rotation_distance = rotation.difference(target_rotation);
+
+    if (world_distance > 0.005 || rotation_distance > 0.005)
     {
         float lerp_amount = 5.0f * deltatime;
 
@@ -39,6 +42,7 @@ void Camera::lerp_transform(float deltatime)
         camera_transform.location = location;
         camera_transform.rotation = rotation;
         update_matrices();
+        get_world()->update_lighting();
     }
 }
 
@@ -46,28 +50,30 @@ void Camera::set_transform(Transform new_transform)
 {
     super::set_transform(new_transform);
     update_matrices();
-    get_world()->update_lighting();
 }
 
 void Camera::set_location(glm::vec3 new_location)
 {
     super::set_location(new_location);
     update_matrices();
-    get_world()->update_lighting();
 }
 
 void Camera::set_rotation(Rotator new_rotation)
 {
     super::set_rotation(new_rotation);
     update_matrices();
-    get_world()->update_lighting();
 }
 
 void Camera::add_local_offset(glm::vec3 offset)
 {
     super::add_local_offset(offset);
     update_matrices();
-    get_world()->update_lighting();
+}
+
+void Camera::add_rotation_offset(Rotator rotation)
+{
+    super::add_rotation_offset(rotation);
+    update_matrices();
 }
 
 void Camera::update_matrices()
@@ -79,6 +85,5 @@ void Camera::update_matrices()
     glm::vec3 cam_up = { rotation[2][0], rotation[2][1], rotation[2][2] };
 
     view = glm::lookAt(cam_pos,cam_pos + cam_norm, cam_up);
-
     projection = glm::perspective(glm::radians(fow_angle), aspect_ratio, min_clip, max_clip);
 }

@@ -27,6 +27,7 @@ public:
 	void set_location(glm::vec3 new_location) override;
 	void set_rotation(Rotator new_rotation) override;
 	void add_local_offset(glm::vec3 offset) override;
+	void add_rotation_offset(Rotator rotation) override;
 
 	void set_aspect_ratio(float new_ratio) { aspect_ratio = new_ratio; update_matrices(); }
 	void set_fow_angle(float new_angle) { fow_angle = new_angle; update_matrices(); }

@@ -8,7 +8,7 @@ class Mesh_object : public Object
 public:
 	Mesh_object(World* world) : Object(world) {}
 
-	void render();
+	void render() const;
 	void add_mesh(std::shared_ptr<Buffers> geometry, Material material, Transform mesh_relative_transform = Transform());
 
 private:
