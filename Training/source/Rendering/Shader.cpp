@@ -31,6 +31,9 @@ void Shader::set_uniform4f(const std::string& name, float v1, float v2, float v3
 
 void Shader::set_uniform4fv(const std::string& name, int count, float* v) 
 {
+    if (count == 0)
+        return;
+
     int location = get_uniform_location(name);
     if (location == -1)
         return;
@@ -40,6 +43,9 @@ void Shader::set_uniform4fv(const std::string& name, int count, float* v)
 
 void Shader::set_uniform3fv(const std::string& name, int count, float* v) 
 {
+    if (count == 0)
+        return;
+
     int location = get_uniform_location(name);
     if (location == -1)
         return;

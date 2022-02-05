@@ -51,6 +51,7 @@ void Window::init()
     glfwMakeContextCurrent(window);
     glewInit();
     glEnable(GL_DEPTH_TEST);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glfwSwapInterval(1);
     update_deltatime();
     glfwSetWindowUserPointer(get_window(), this);

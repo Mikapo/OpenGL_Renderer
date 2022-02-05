@@ -1,5 +1,5 @@
 #include "World.h"
-#include "Shader_compiler.h"
+#include "Rendering/Shader_compiler.h"
 #include "Rendering/Shader.h"
 
 void World::init()

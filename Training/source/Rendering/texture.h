@@ -2,11 +2,11 @@
 
 #include "Renderer.h"
 
-class texture
+class Texture
 {
 public:
-    texture(const std::string& path);
-    ~texture();
+    Texture(const std::string& path);
+    ~Texture();
 
     void Bind(unsigned int slot = 0) const;
     void UnBind();

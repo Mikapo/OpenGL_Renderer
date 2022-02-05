@@ -1,9 +1,10 @@
 #include "Training_window.h"
 
 #include <iostream>
-#include "Rendering/Cube_buffers.h"
+#include "Rendering/Buffer_factory.h"
 #include <unordered_map>
-#include "Shader_compiler.h"
+#include "Rendering/Shader_compiler.h"
+#include "Rendering/Texture_factory.h"
 #include "GLFW/glfw3.h"
 
 void Training_window::init()
@@ -13,8 +14,6 @@ void Training_window::init()
 	world.init();
 	init_objects();
 	setup_inputs();
-
-	Buffer_factory::get_from_file("../cube.obj");
 }
 
 void Training_window::setup_inputs()
@@ -86,15 +85,14 @@ void Training_window::init_objects()
 	world.spawn_camera(camera_transform);
 
 	Transform model_transform;
-	model_transform.scale = { 0.25f, 0.25f, 0.25f };
+	model_transform.scale = { 0.1f, 0.1f, 0.1f };
 	model_transform.rotation = { 90.0f, 0.0f, 0.0f };
 	model = world.spawn_mesh_object(model_transform);
 
 	std::shared_ptr<Shader> shader = Shader_compiler::get("shaders/shader.frag", "shaders/Shader.vert");
 	Material material(shader);
 	material.ambient = { 0.25f, 0.25f, 0.25f, 1.0f };
-	model->add_mesh(Buffer_factory::get_from_file("../Zucche2.obj", 0), material);
-	model->add_mesh(Buffer_factory::get_from_file("../Zucche2.obj", 1), material);
+	model->add_mesh(Buffer_factory::get_from_file("../vader.obj"), material);
 
 	Transform light_transform;
 	light_transform.location = { 0.0f, -3.0f, 0.0f };

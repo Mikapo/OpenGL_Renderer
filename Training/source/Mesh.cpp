@@ -20,7 +20,7 @@ void Mesh::render() const
 	glm::mat4 modelview = view * model;
 
 	material.update_shader(modelview, projection);
-	renderer.draw(&geometry->va, &geometry->ib, material.get_shader());
+	renderer.draw(&geometry->va, &geometry->ib, &material);
 }
 
 glm::mat4 Mesh::calculate_model_matrix(Transform transform) const
