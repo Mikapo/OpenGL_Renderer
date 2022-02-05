@@ -5,7 +5,7 @@
 class vertex_buffer
 {
 public:
-    vertex_buffer(const void* data, unsigned int size)
+    vertex_buffer(const void* data, size_t size)
     {
         glGenBuffers(1, &m_renderer_id);
         glBindBuffer(GL_ARRAY_BUFFER, m_renderer_id);

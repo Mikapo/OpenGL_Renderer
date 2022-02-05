@@ -8,7 +8,7 @@ void Renderer::draw(const vertex_array* va, const index_buffer* ib, const Materi
     material->bind();
     va->bind();
     ib->bind();
-    glDrawElements(GL_TRIANGLES, ib->get_count(), GL_UNSIGNED_INT, nullptr);
+    glDrawElements(GL_TRIANGLES, (GLsizei)ib->get_count(), GL_UNSIGNED_INT, nullptr);
 }
 
 void Renderer::clear() const

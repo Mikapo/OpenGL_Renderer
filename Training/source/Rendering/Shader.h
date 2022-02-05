@@ -18,8 +18,8 @@ public:
 	void bind() const;
     void unbind() const;
     void set_uniform4f(const std::string& name, float v1, float v2, float v3, float v4);
-    void set_uniform4fv(const std::string& name, int count, float* v);
-    void set_uniform3fv(const std::string& name, int count, float* v);
+    void set_uniform4fv(const std::string& name, size_t count, float* v);
+    void set_uniform3fv(const std::string& name, size_t count, float* v);
     void set_uniform2f(const std::string& name, float v1, float v2);
     void set_uniform1f(const std::string& name, float v1);
     void set_uniform1i(const std::string& name, int v1);

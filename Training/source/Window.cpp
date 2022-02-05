@@ -86,7 +86,7 @@ void Window::update_deltatime()
     auto time = high_resolution_clock::now();
     auto time_passed = time - time_since_last_frame;
     time_since_last_frame = time;
-    deltatime = time_passed.count() * 0.000000001;
+    deltatime = time_passed.count() * 0.000000001f;
 }
 
 

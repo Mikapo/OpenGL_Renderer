@@ -29,7 +29,7 @@ void Shader::set_uniform4f(const std::string& name, float v1, float v2, float v3
     glUniform4f(location, v1, v2, v3, v4);
 }
 
-void Shader::set_uniform4fv(const std::string& name, int count, float* v) 
+void Shader::set_uniform4fv(const std::string& name, size_t count, float* v) 
 {
     if (count == 0)
         return;
@@ -38,10 +38,10 @@ void Shader::set_uniform4fv(const std::string& name, int count, float* v)
     if (location == -1)
         return;
 
-    glUniform4fv(location, count, v);
+    glUniform4fv(location, (GLsizei)count, v);
 }
 
-void Shader::set_uniform3fv(const std::string& name, int count, float* v) 
+void Shader::set_uniform3fv(const std::string& name, size_t count, float* v)
 {
     if (count == 0)
         return;
@@ -50,7 +50,7 @@ void Shader::set_uniform3fv(const std::string& name, int count, float* v)
     if (location == -1)
         return;
 
-    glUniform3fv(location, count, v);
+    glUniform3fv(location, (GLsizei)count, v);
 }
 
 void Shader::set_uniform2f(const std::string& name, float v1, float v2)  

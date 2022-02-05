@@ -45,7 +45,7 @@ void World::update_lighting() const
         std::shared_ptr shader_ptr = shader.second.lock();
         shader_ptr->set_uniform4fv("lightpos", light_pos.size(), light_pos.data());
         shader_ptr->set_uniform4fv("lightcolor", light_color.size(), light_color.data());
-        shader_ptr->set_uniform1i("lightamount", lights.size());
+        shader_ptr->set_uniform1i("lightamount", (int)lights.size());
     }
 }
 

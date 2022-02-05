@@ -1,6 +1,6 @@
 #include "IndexBuffer.h"
 
-index_buffer::index_buffer(const void* data, unsigned int count) : m_count(count)
+index_buffer::index_buffer(const void* data, size_t count) : m_count(count)
 {
     glGenBuffers(1, &m_renderer_id);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_renderer_id);
