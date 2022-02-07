@@ -38,7 +38,6 @@ void Training_window::cleanup()
 
 void Training_window::update(float deltatime)
 {
-	model->add_rotation_offset(Rotator(0.0f, 1.0f, 0.0f) * deltatime);
 	world.update(deltatime);
 }
 
@@ -81,21 +80,93 @@ void Training_window::on_window_resize(GLFWwindow* window, int new_width, int ne
 void Training_window::init_objects()
 {
 	Transform camera_transform;
-	camera_transform.location = { 0.0f, -2.0f, 0.0f };
+	camera_transform.location = { 0.0f, -1.0f, 0.1f };
+	camera_transform.rotation = { 0.0f, 0.0f, 0.0f };
 	world.spawn_camera(camera_transform);
+
+	init_walls();
+	init_barrels();
+
+	init_furniture();
+
+	Transform light_transform;
+	light_transform.location = { 0.0f, -3.0f, 1.0f };
+	world.spawn_light(light_transform);
+}
+
+void Training_window::init_furniture()
+{
+	std::shared_ptr<Shader> shader = Shader_compiler::get("shaders/shader.frag", "shaders/Shader.vert");
+	Material Gothid_commode(shader);
+	Gothid_commode.add_texture(Texture_factory::get("../Textures/GothicCommode.jpg"), 0);
+	Gothid_commode.specular = { 0.5f, 0.5f, 0.5f, 1.0f };
+	Gothid_commode.ambient = { 0.2f, 0.2f, 0.2f, 1.0f };
+	Gothid_commode.diffuse = { 0.5f, 0.5f, 0.5f, 1.0f };
+	Gothid_commode.shininess = { 900.0f };
+
+	Transform furniture_transform;
+	furniture_transform.location = { 0.4f, 0.0f, 0.01f };
+	furniture_transform.rotation = { 90.0f, -60.0f, 00.0f };
+	furniture_transform.scale = { 0.1, 0.1, 0.1 };
+	auto furniture = world.spawn_mesh_object(furniture_transform);
+	furniture->add_mesh(Buffer_factory::get_from_file("../models/GothicCommode.obj"), Gothid_commode);
+
+	Material Wooden_table(shader);
+	Wooden_table.add_texture(Texture_factory::get("../Textures/WoodenTable.jpg"), 0);
+	Wooden_table.specular = { 0.5f, 0.5f, 0.5f, 1.0f };
+	Wooden_table.ambient = { 0.2f, 0.2f, 0.2f, 1.0f };
+	Wooden_table.diffuse = { 0.5f, 0.5f, 0.5f, 1.0f };
+	Wooden_table.shininess = { 900.0f };
+
+	furniture_transform.location = { -0.4f, 0.0f, 0.01f };
+	furniture_transform.rotation = { 90.0f, 60.0f, 00.0f };
+	furniture_transform.scale = { 0.1, 0.1, 0.1 };
+	auto wooden_table = world.spawn_mesh_object(furniture_transform);
+	wooden_table->add_mesh(Buffer_factory::get_from_file("../models/WoodenTable.obj"), Wooden_table);
+}
+
+void Training_window::init_barrels()
+{
+	std::shared_ptr<Shader> shader = Shader_compiler::get("shaders/shader.frag", "shaders/Shader.vert");
+	Material barrel_material(shader);
+	barrel_material.add_texture(Texture_factory::get("../Textures/wine_barrel.jpg"), 0);
+	barrel_material.specular = { 0.5f, 0.5f, 0.5f, 1.0f };
+	barrel_material.ambient = { 0.2f, 0.2f, 0.2f, 1.0f };
+	barrel_material.diffuse = { 0.5f, 0.5f, 0.5f, 1.0f };
+	barrel_material.shininess = { 900.0f };
+
+	Transform barrel_transform;
+	barrel_transform.location = { 0.0f, 0.4f, 0.01f };
+	barrel_transform.rotation = { 90.0f, 0.0f, 0.0f };
+	barrel_transform.scale = { 0.1, 0.1, 0.1 };
+
+	Transform mesh_transform;
+	auto barrels = world.spawn_mesh_object(barrel_transform);
+	barrels->add_mesh(Buffer_factory::get_from_file("../models/wine_barrel.obj"), barrel_material, mesh_transform);
+	mesh_transform.location = { 1.0f, 0.0, 0.0 };
+	barrels->add_mesh(Buffer_factory::get_from_file("../models/wine_barrel.obj"), barrel_material, mesh_transform);
+	mesh_transform.location = { -1.0f, 0.0, 0.0 };
+	barrels->add_mesh(Buffer_factory::get_from_file("../models/wine_barrel.obj"), barrel_material, mesh_transform);
+}
+
+void Training_window::init_walls()
+{
+	std::shared_ptr<Shader> shader = Shader_compiler::get("shaders/shader.frag", "shaders/Shader.vert");
+	Material wall_material(shader);
+	wall_material.add_texture(Texture_factory::get("../Textures/stone_tiles.png"), 0);
+	wall_material.specular = { 0.1f, 0.1f, 0.1f, 1.0f };
+	wall_material.ambient = { 0.2f, 0.2f, 0.2f, 1.0f };
+	wall_material.shininess = { 100.0f };
 
 	Transform model_transform;
 	model_transform.scale = { 0.1f, 0.1f, 0.1f };
-	model_transform.rotation = { 90.0f, 0.0f, 0.0f };
-	model = world.spawn_mesh_object(model_transform);
+	model_transform.rotation = { 0.0f, 0.0f, 0.0f };
+	auto wall = world.spawn_mesh_object(model_transform);
 
-	std::shared_ptr<Shader> shader = Shader_compiler::get("shaders/shader.frag", "shaders/Shader.vert");
-	Material material(shader);
-	material.ambient = { 0.25f, 0.25f, 0.25f, 1.0f };
-	model->add_mesh(Buffer_factory::get_from_file("../vader.obj"), material);
-
-	Transform light_transform;
-	light_transform.location = { 0.0f, -3.0f, 0.0f };
-	world.spawn_light(light_transform);
+	Transform mesh_transform;
+	mesh_transform.location = { 0.0f, 0.0f, 0.0f };
+	mesh_transform.rotation = { 90.0f, 0.0f, 0.0f };
+	mesh_transform.scale = { 1.0f, 1.0f, 1.0f };
+	wall->add_mesh(Buffer_factory::get_from_file("../models/wall.obj"), wall_material, mesh_transform);
 }
 

@@ -27,7 +27,7 @@ void Material::bind() const
 		texture.second->Bind(texture.first);
 	}
 
-	shader->set_uniform1i("uses_texture", (int)has_texture);
+	//shader->set_uniform1i("uses_texture", (int)has_texture);
 	shader->set_uniform1i("tex", 0);
 	shader->bind();
 }

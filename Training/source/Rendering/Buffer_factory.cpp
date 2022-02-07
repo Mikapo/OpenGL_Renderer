@@ -4,6 +4,7 @@
 #include <assimp/scene.h>      
 #include <assimp/postprocess.h> 
 #include <vector>
+#include <iostream>
 
 #define ASSIMP_LOAD_FLAGS (aiProcess_Triangulate | aiProcess_GenSmoothNormals |  aiProcess_JoinIdenticalVertices )
 #define ARRAY_SIZE_IN_ELEMENTS(a) (sizeof(a)/sizeof(a[0]))
@@ -17,6 +18,13 @@ const std::shared_ptr<Buffers> Buffer_factory::get_from_file(const std::string& 
 
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(file_path.c_str(), ASSIMP_LOAD_FLAGS);
+
+	if (!scene)
+	{
+		std::cout << "file not found";
+		std::cin.get();
+		throw 1;
+	}
 
 	auto mesh = scene->mMeshes[0];
 	std::vector<float> vertices = get_vertices(mesh);

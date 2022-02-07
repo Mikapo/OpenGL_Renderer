@@ -30,14 +30,14 @@ glm::mat4 Mesh::calculate_model_matrix(Transform transform) const
 
 	glm::mat4 identity = glm::mat4(1);
 
-	glm::mat4 pitch = glm::rotate(identity, transform.rotation.pitch, glm::vec3(1, 0, 0));
-	glm::mat4 yaw = glm::rotate(identity, transform.rotation.yaw, glm::vec3(0, 0, 1));
-	glm::mat4 roll = glm::rotate(identity, transform.rotation.roll, glm::vec3(0, 1, 0));
+	glm::mat4 pitch = glm::rotate(identity, glm::radians(transform.rotation.pitch), glm::vec3(1, 0, 0));
+	glm::mat4 yaw = glm::rotate(identity, glm::radians(transform.rotation.yaw), glm::vec3(0, 0, 1));
+	glm::mat4 roll = glm::rotate(identity, glm::radians(transform.rotation.roll), glm::vec3(0, 1, 0));
 	glm::mat4 rotation = roll * yaw * pitch;
 
 	glm::mat4 scale = glm::scale(identity, transform.scale);
 	glm::mat4 translation = glm::translate(identity, transform.location);
-	glm::mat4 model = translation * rotation * scale;
+	glm::mat4 model = translation * scale * rotation;
 
 	return model;
 }

@@ -27,7 +27,9 @@ protected:
     World* get_world() { return &world; }
 private:
     void init_objects();
+    void init_furniture();
+    void init_barrels();
+    void init_walls();
 
     World world;
-    std::shared_ptr<Mesh_object> model;
 };

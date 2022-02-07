@@ -138,8 +138,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)libraries\assimp\include;$(SolutionDir)ImGui;$(SolutionDir)libraries\GLEW\include\GL;$(SolutionDir)training\source;$(SolutionDir)libraries\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)libraries\assimp\include;$(SolutionDir)Training\source\ImGui;$(SolutionDir)libraries\GLEW\include\GL;$(SolutionDir)training\source;$(SolutionDir)libraries\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>NotSet</SubSystem>
@@ -147,10 +147,11 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)x64\Release;$(SolutionDir)libraries\GLEW\lib\Release\x64;$(SolutionDir)libraries\assimp;$(SolutionDir)libraries\GLFW\lib-vc2019\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\glm\detail\glm.cpp" />
     <ClCompile Include="source\ImGui\imgui.cpp" />
     <ClCompile Include="source\ImGui\imgui_demo.cpp" />
     <ClCompile Include="source\ImGui\imgui_draw.cpp" />
@@ -158,56 +159,34 @@
     <ClCompile Include="source\ImGui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="source\ImGui\imgui_tables.cpp" />
     <ClCompile Include="source\ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\Mesh.cpp" />
+    <ClCompile Include="source\Object\Camera.cpp" />
     <ClCompile Include="source\Object\Light.cpp" />
     <ClCompile Include="source\Object\Mesh_object.cpp" />
-    <ClCompile Include="source\Rendering\Shader_compiler.cpp" />
-    <ClCompile Include="source\Object\Camera.cpp" />
     <ClCompile Include="source\Object\Object.cpp" />
-    <ClCompile Include="source\Rendering\Material.cpp" />
     <ClCompile Include="source\Rendering\Buffer_factory.cpp" />
-    <ClCompile Include="source\Mesh.cpp" />
-    <ClCompile Include="source\main.cpp" />
-    <ClCompile Include="source\UI\Elements\Button.cpp" />
-    <ClCompile Include="source\UI\Elements\Combo_box.cpp" />
-    <ClCompile Include="source\glm\detail\glm.cpp" />
     <ClCompile Include="source\Rendering\IndexBuffer.cpp" />
+    <ClCompile Include="source\Rendering\Material.cpp" />
     <ClCompile Include="source\Rendering\Renderer.cpp" />
     <ClCompile Include="source\Rendering\Shader.cpp" />
+    <ClCompile Include="source\Rendering\Shader_compiler.cpp" />
     <ClCompile Include="source\Rendering\stb_image\stb_image.cpp" />
-    <ClCompile Include="source\Rendering\VertexArray.cpp" />
     <ClCompile Include="source\Rendering\Texture.cpp" />
-    <ClCompile Include="source\Window.cpp" />
-    <ClCompile Include="source\UI\UI.cpp" />
-    <ClCompile Include="source\UI\UI_observer.cpp" />
-    <ClCompile Include="source\UI\UI_event_handler.cpp" />
-    <ClCompile Include="source\Training_window.cpp" />
-    <ClCompile Include="source\World.cpp" />
     <ClCompile Include="source\Rendering\Texture_factory.cpp" />
+    <ClCompile Include="source\Rendering\VertexArray.cpp" />
+    <ClCompile Include="source\Rendering\VertexBuffer.cpp" />
+    <ClCompile Include="source\Training_window.cpp" />
+    <ClCompile Include="source\UI\Elements\Button.cpp" />
+    <ClCompile Include="source\UI\Elements\Combo_box.cpp" />
+    <ClCompile Include="source\UI\UI.cpp" />
+    <ClCompile Include="source\UI\UI_event_handler.cpp" />
+    <ClCompile Include="source\UI\UI_observer.cpp" />
+    <ClCompile Include="source\Window.cpp" />
+    <ClCompile Include="source\World.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\ImGui\imconfig.h" />
-    <ClInclude Include="source\ImGui\imgui.h" />
-    <ClInclude Include="source\ImGui\imgui_impl_glfw.h" />
-    <ClInclude Include="source\ImGui\imgui_impl_opengl3.h" />
-    <ClInclude Include="source\ImGui\imgui_impl_opengl3_loader.h" />
-    <ClInclude Include="source\ImGui\imgui_internal.h" />
-    <ClInclude Include="source\ImGui\imstb_rectpack.h" />
-    <ClInclude Include="source\ImGui\imstb_textedit.h" />
-    <ClInclude Include="source\ImGui\imstb_truetype.h" />
-    <ClInclude Include="source\Input_handler.h" />
-    <ClInclude Include="source\Object\Light.h" />
-    <ClInclude Include="source\Object\Mesh_object.h" />
-    <ClInclude Include="source\Rendering\Shader_compiler.h" />
-    <ClInclude Include="source\Object\Camera.h" />
-    <ClInclude Include="source\Object\Object.h" />
-    <ClInclude Include="source\Rendering\Material.h" />
-    <ClInclude Include="source\Rendering\Buffers.h" />
-    <ClInclude Include="source\Rendering\Buffer_factory.h" />
-    <ClInclude Include="source\Mesh.h" />
     <ClInclude Include="source\Dimensions.h" />
-    <ClInclude Include="source\Transform.h" />
-    <ClInclude Include="source\UI\Elements\Combo_box.h" />
-    <ClInclude Include="source\UI\Elements\Button.h" />
     <ClInclude Include="source\glm\common.hpp" />
     <ClInclude Include="source\glm\detail\compute_common.hpp" />
     <ClInclude Include="source\glm\detail\compute_vector_relational.hpp" />
@@ -490,25 +469,46 @@
     <ClInclude Include="source\glm\vec3.hpp" />
     <ClInclude Include="source\glm\vec4.hpp" />
     <ClInclude Include="source\glm\vector_relational.hpp" />
-    <ClInclude Include="source\Rendering\Shader.h" />
-    <ClInclude Include="source\Rendering\stb_image\stb_Image.h" />
-    <ClInclude Include="source\Rendering\VertexArray.h" />
+    <ClInclude Include="source\ImGui\imconfig.h" />
+    <ClInclude Include="source\ImGui\imgui.h" />
+    <ClInclude Include="source\ImGui\imgui_impl_glfw.h" />
+    <ClInclude Include="source\ImGui\imgui_impl_opengl3.h" />
+    <ClInclude Include="source\ImGui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="source\ImGui\imgui_internal.h" />
+    <ClInclude Include="source\ImGui\imstb_rectpack.h" />
+    <ClInclude Include="source\ImGui\imstb_textedit.h" />
+    <ClInclude Include="source\ImGui\imstb_truetype.h" />
+    <ClInclude Include="source\Input_handler.h" />
+    <ClInclude Include="source\Mesh.h" />
+    <ClInclude Include="source\Object\Camera.h" />
+    <ClInclude Include="source\Object\Light.h" />
+    <ClInclude Include="source\Object\Mesh_object.h" />
+    <ClInclude Include="source\Object\Object.h" />
+    <ClInclude Include="source\Rendering\Buffers.h" />
+    <ClInclude Include="source\Rendering\Buffer_factory.h" />
     <ClInclude Include="source\Rendering\IndexBuffer.h" />
+    <ClInclude Include="source\Rendering\Material.h" />
     <ClInclude Include="source\Rendering\Renderer.h" />
+    <ClInclude Include="source\Rendering\Shader.h" />
+    <ClInclude Include="source\Rendering\Shader_compiler.h" />
+    <ClInclude Include="source\Rendering\stb_image\stb_Image.h" />
+    <ClInclude Include="source\Rendering\Texture.h" />
+    <ClInclude Include="source\Rendering\Texture_factory.h" />
+    <ClInclude Include="source\Rendering\VertexArray.h" />
     <ClInclude Include="source\Rendering\VertexBuffer.h" />
     <ClInclude Include="source\Rendering\VertexBufferLayout.h" />
     <ClInclude Include="source\Sorts\HeapSort.h" />
-    <ClInclude Include="source\Rendering\VertexBuffer.cpp" />
-    <ClInclude Include="source\Rendering\Texture.h" />
-    <ClInclude Include="source\UI\UI_data.h" />
-    <ClInclude Include="source\UI\Elements\UI_element.h" />
-    <ClInclude Include="source\Window.h" />
-    <ClInclude Include="source\UI\UI.h" />
-    <ClInclude Include="source\UI\UI_observer.h" />
-    <ClInclude Include="source\UI\UI_event_handler.h" />
     <ClInclude Include="source\Training_window.h" />
+    <ClInclude Include="source\Transform.h" />
+    <ClInclude Include="source\UI\Elements\Button.h" />
+    <ClInclude Include="source\UI\Elements\Combo_box.h" />
+    <ClInclude Include="source\UI\Elements\UI_element.h" />
+    <ClInclude Include="source\UI\UI.h" />
+    <ClInclude Include="source\UI\UI_data.h" />
+    <ClInclude Include="source\UI\UI_event_handler.h" />
+    <ClInclude Include="source\UI\UI_observer.h" />
+    <ClInclude Include="source\Window.h" />
     <ClInclude Include="source\World.h" />
-    <ClInclude Include="source\Rendering\Texture_factory.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\Shader.vex" />
@@ -648,9 +648,7 @@
     <None Include="source\glm\gtx\vector_angle.inl" />
     <None Include="source\glm\gtx\vector_query.inl" />
     <None Include="source\glm\gtx\wrap.inl" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="source\glm\CMakeLists.txt" />
+    <None Include="source\imgui.ini" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -36,12 +36,6 @@ vec4 ComputeLight (const in vec3 direction, const in vec4 lightcolor, const in v
 
 void main() 
 {     
-        if(uses_texture != 0)
-        {
-            fragColor = texture(tex, tex_coord);
-        }
-        else
-        {
             // They eye is always at (0,0,0) looking down -z axis 
             // Also compute current fragment position and direction to eye 
 
@@ -63,8 +57,6 @@ void main()
                 vec3 half1 = normalize (direction1 + eyedirn) ;  
                 final_light_color =+ ComputeLight(direction1, lightcolor[i], normal, half1, diffuse, specular, shininess) ;
             }
-        
-            fragColor = ambient + final_light_color;
-        }
-   
+       
+            fragColor = (ambient + final_light_color) * texture(tex, tex_coord);
 }
