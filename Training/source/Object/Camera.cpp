@@ -1,11 +1,10 @@
 #include "Camera.h"
 
-#include "glm/ext/matrix_transform.hpp"
-#include "glm/ext/matrix_clip_space.hpp"
+#include <cmath>
+#include <glm/ext/matrix_clip_space.hpp>
+#include <glm/ext/matrix_transform.hpp>
 
 #include "World.h"
-#include <iostream>
-#include <cmath>
 
 void Camera::init()
 {
@@ -19,10 +18,10 @@ void Camera::update(float deltatime)
 void Camera::lerp_transform(float deltatime)
 {
     Transform current_transform = get_transform();
-    glm::vec3 target_location = current_transform.location;
-    Rotator target_rotation = current_transform.rotation;
-    glm::vec3 location = camera_transform.location;
-    Rotator rotation = camera_transform.rotation;
+    glm::vec3 target_location = current_transform.m_location;
+    Rotator target_rotation = current_transform.m_rotation;
+    glm::vec3 location = m_camera_transform.m_location;
+    Rotator rotation = m_camera_transform.m_rotation;
 
     float world_distance = glm::distance(location, target_location);
     float rotation_distance = rotation.difference(target_rotation);
@@ -35,14 +34,13 @@ void Camera::lerp_transform(float deltatime)
         location.y = std::lerp(location.y, target_location.y, lerp_amount);
         location.z = std::lerp(location.z, target_location.z, lerp_amount);
 
-        rotation.pitch = std::lerp(rotation.pitch, target_rotation.pitch, lerp_amount);
-        rotation.yaw = std::lerp(rotation.yaw, target_rotation.yaw, lerp_amount);
-        rotation.roll = std::lerp(rotation.roll, target_rotation.roll, lerp_amount);
+        rotation.m_pitch = std::lerp(rotation.m_pitch, target_rotation.m_pitch, lerp_amount);
+        rotation.m_yaw = std::lerp(rotation.m_yaw, target_rotation.m_yaw, lerp_amount);
+        rotation.m_roll = std::lerp(rotation.m_roll, target_rotation.m_roll, lerp_amount);
 
-        camera_transform.location = location;
-        camera_transform.rotation = rotation;
+        m_camera_transform.m_location = location;
+        m_camera_transform.m_rotation = rotation;
         update_matrices();
-        get_world()->update_lighting();
     }
 }
 
@@ -78,12 +76,12 @@ void Camera::add_rotation_offset(Rotator rotation)
 
 void Camera::update_matrices()
 {
-    glm::mat4 rotation = calulate_rotation_matrix(camera_transform.rotation);
+    glm::mat4 rotation = calulate_rotation_matrix(m_camera_transform.m_rotation);
 
-    glm::vec3 cam_pos = camera_transform.location;
+    glm::vec3 cam_pos = m_camera_transform.m_location;
     glm::vec3 cam_norm = { rotation[1][0], rotation[1][1], rotation[1][2] };
     glm::vec3 cam_up = { rotation[2][0], rotation[2][1], rotation[2][2] };
 
-    view = glm::lookAt(cam_pos,cam_pos + cam_norm, cam_up);
-    projection = glm::perspective(glm::radians(fow_angle), aspect_ratio, min_clip, max_clip);
+    m_view = glm::lookAt(cam_pos,cam_pos + cam_norm, cam_up);
+    m_projection = glm::perspective(glm::radians(m_fow_angle), m_aspect_ratio, m_min_clip, m_max_clip);
 }

@@ -1,12 +1,11 @@
 #pragma once
 
+#include <array>
+#include <glm/matrix.hpp>
 #include <string>
 #include <unordered_map>
-#include <string>
-#include <array>
-#include "Renderer.h"
 
-#include "glm/matrix.hpp"
+#include "Renderer.h"
 
 class Shader
 {
@@ -19,6 +18,7 @@ public:
     void unbind() const;
     void set_uniform4f(const std::string& name, float v1, float v2, float v3, float v4);
     void set_uniform4fv(const std::string& name, size_t count, float* v);
+    void set_uniform3f(const std::string& name, float v1, float v2, float v3);
     void set_uniform3fv(const std::string& name, size_t count, float* v);
     void set_uniform2f(const std::string& name, float v1, float v2);
     void set_uniform1f(const std::string& name, float v1);

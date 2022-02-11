@@ -1,5 +1,7 @@
 #pragma once
+
 #include "UI_data.h"
+
 class UI_observer
 {
 public:

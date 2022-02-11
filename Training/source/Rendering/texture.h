@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Renderer.h"
+#include "Texture_slots.h"
 
 class Texture
 {
@@ -8,7 +9,7 @@ public:
     Texture(const std::string& path);
     ~Texture();
 
-    void Bind(unsigned int slot = 0) const;
+    void Bind(Texture_slot slot = Texture_slot::texture) const;
     void UnBind();
 
     inline int GetWidth() const { return m_width; }

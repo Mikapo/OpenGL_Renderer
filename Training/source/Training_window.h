@@ -2,9 +2,10 @@
 
 #include "Window.h"
 
-#include "Rendering/Renderer.h"
-#include "Mesh.h"
 #include <memory>
+
+#include "Mesh.h"
+#include "Rendering/Renderer.h"
 #include "World.h"
 
 class Training_window : public Window
@@ -24,12 +25,12 @@ protected:
     void rotate_camera(float value);
 
     void on_window_resize(GLFWwindow* window, int new_width, int new_height) override;
-    World* get_world() { return &world; }
+    World* get_world() { return &m_world; }
 private:
     void init_objects();
     void init_furniture();
     void init_barrels();
     void init_walls();
 
-    World world;
+    World m_world;
 };

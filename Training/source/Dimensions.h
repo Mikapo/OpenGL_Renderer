@@ -2,6 +2,6 @@
 
 struct Dimensions
 {
-    int width = 0;
-    int height = 0;
+    int m_width = 0;
+    int m_height = 0;
 };

@@ -4,9 +4,8 @@
 #include <vector>
 #include <memory>
 #include <string>
-
-#include "GLFW/glfw3.h"
-#include "GLFW/glfw3native.h"
+#include <GLFW/glfw3.h>
+#include <GLFW/glfw3native.h>
 
 struct Axis_mapping
 {
@@ -46,7 +45,7 @@ class Input_handler
 public:
 	void update()
 	{
-		for (auto& value : axis_mappings)
+		for (auto& value : m_axis_mappings)
 		{
 			auto* mapping = value.second.get();
 			mapping->call(mapping->current_value);
@@ -55,7 +54,7 @@ public:
 
 	void on_key_event(int key, int event)
 	{
-		for (auto& value : axis_mappings)
+		for (auto& value : m_axis_mappings)
 		{
 			auto* mapping = value.second.get();
 
@@ -73,13 +72,13 @@ public:
 	template<typename T>
 	Axis_mapping* add_axis_mapping(const std::string& name, T* obj, void (T::* f)(float))
 	{
-		axis_mappings.emplace(name, new Axis_mapping_function(obj, f));
-		return axis_mappings[name].get();
+		m_axis_mappings.emplace(name, new Axis_mapping_function(obj, f));
+		return m_axis_mappings[name].get();
 	}
 
 	void remove_axis_mapping(const std::string& name)
 	{
-		axis_mappings.erase(name);
+		m_axis_mappings.erase(name);
 	}
 
 	void clear()
@@ -88,6 +87,6 @@ public:
 	}
 
 private:
-	std::unordered_map<std::string, std::unique_ptr<Axis_mapping>> axis_mappings;
+	std::unordered_map<std::string, std::unique_ptr<Axis_mapping>> m_axis_mappings;
 };
 

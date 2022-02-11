@@ -1,20 +1,20 @@
 #include "Buffer_factory.h"
 
 #include <assimp/Importer.hpp>   
-#include <assimp/scene.h>      
 #include <assimp/postprocess.h> 
-#include <vector>
+#include <assimp/scene.h>      
 #include <iostream>
+#include <vector>
 
 #define ASSIMP_LOAD_FLAGS (aiProcess_Triangulate | aiProcess_GenSmoothNormals |  aiProcess_JoinIdenticalVertices )
 #define ARRAY_SIZE_IN_ELEMENTS(a) (sizeof(a)/sizeof(a[0]))
 
-std::unordered_map<std::string, std::weak_ptr<Buffers>> Buffer_factory::buffer_stash;
+std::unordered_map<std::string, std::weak_ptr<Buffers>> Buffer_factory::m_buffer_stash;
 
 const std::shared_ptr<Buffers> Buffer_factory::get_from_file(const std::string& file_path)
 {
-	if (!buffer_stash[file_path].expired())
-		return buffer_stash[file_path].lock();
+	if (!m_buffer_stash[file_path].expired())
+		return m_buffer_stash[file_path].lock();
 
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(file_path.c_str(), ASSIMP_LOAD_FLAGS);
@@ -30,13 +30,13 @@ const std::shared_ptr<Buffers> Buffer_factory::get_from_file(const std::string& 
 	std::vector<float> vertices = get_vertices(mesh);
 	std::vector<unsigned int> indices = get_indices(mesh);
 		
-	vertex_buffer_layout layout;
+	Vertex_buffer_layout layout;
 	layout.push<float>(3);
 	layout.push<float>(3);
 	layout.push<float>(2);
 
 	std::shared_ptr buffer = std::shared_ptr<Buffers>(new Buffers(vertices, indices, layout));
-	buffer_stash[file_path] = buffer;
+	m_buffer_stash[file_path] = buffer;
 
 	return buffer;
 }

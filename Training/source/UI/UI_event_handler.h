@@ -12,6 +12,6 @@ public:
     void on_combo_box_event(std::string input, UI_combo_box_event type) override;
 
 private:
-    Pathfinding_window* owner = nullptr;
+    Pathfinding_window* m_owner = nullptr;
 
 };

@@ -2,11 +2,11 @@
 
 #include "Renderer.h"
 
-class index_buffer
+class Index_buffer
 {
 public:
-    index_buffer(const void* data, size_t count);
-    ~index_buffer();
+    Index_buffer(const void* data, size_t count);
+    ~Index_buffer();
 
     void bind() const;
     void unbind() const;

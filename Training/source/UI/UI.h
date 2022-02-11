@@ -1,11 +1,11 @@
 #pragma once
 
-#include "UI_data.h"
-#include"Elements/Button.h"
-
+#include <memory>
 #include <unordered_set>
 #include <vector>
-#include <memory>
+
+#include "UI_data.h"
+#include "Elements/Button.h"
 
 struct GLFWwindow;
 class UI_observer;
@@ -23,7 +23,7 @@ private:
     void setup_elements();
     void update_elements();
 
-    std::unordered_set<UI_observer*> observers;
-    std::vector<std::unique_ptr<UI_element>> elements;
-    bool hovered_by_mouse = false;
+    std::unordered_set<UI_observer*> m_observers;
+    std::vector<std::unique_ptr<UI_element>> m_elements;
+    bool m_hovered_by_mouse = false;
 };

@@ -1,39 +1,44 @@
 #pragma once
 
-#include <Rendering/Renderer.h>
-#include "glm/vec3.hpp"
-#include "Transform.h"
-#include "Rendering/Material.h"
-#include "Rendering/Buffers.h"
+#include <glm/vec3.hpp>
 #include <memory>
+#include <Rendering/Renderer.h>
+
+#include "Rendering/Buffers.h"
+#include "Rendering/Material.h"
+#include "Transform.h"
+
 
 class Mesh_object;
 class World;
+class Shadow_map;
 class Mesh
 {
 public:
 	Mesh(World* world, std::shared_ptr<Buffers> geometry, Material material)
-		: world(world), geometry(geometry), material(material) {}
+		: m_world(world), m_geometry(geometry), m_material(material) {}
 
 	void render() const;
-	void set_relative_rotation(Rotator new_rotation) { relative_transform.rotation = new_rotation; }
-	void set_relative_location(glm::vec3 new_location) { relative_transform.location = new_location; }
-	void set_relative_scale(glm::vec3 new_scale) { relative_transform.scale = new_scale; }
-	void set_relative_transform(Transform new_transform) { relative_transform = new_transform; }
-	void set_owner(Mesh_object* new_owner) { owner = new_owner; }
-	glm::vec3 get_relative_location() { return relative_transform.location; }
-	Rotator get_relative_rotation() { return relative_transform.rotation; }
-	glm::vec3 get_relative_scale() { return relative_transform.scale; }
+	void render_to_shadow_map(const Shadow_map* shadow_map);
+	void set_relative_rotation(Rotator new_rotation) { m_relative_transform.m_rotation = new_rotation; }
+	void set_relative_location(glm::vec3 new_location) { m_relative_transform.m_location = new_location; }
+	void set_relative_scale(glm::vec3 new_scale) { m_relative_transform.m_scale = new_scale; }
+	void set_relative_transform(Transform new_transform) { m_relative_transform = new_transform; }
+	void set_owner(Mesh_object* new_owner) { m_owner = new_owner; }
+	glm::vec3 get_relative_location() { return m_relative_transform.m_location; }
+	Rotator get_relative_rotation() { return m_relative_transform.m_rotation; }
+	glm::vec3 get_relative_scale() { return m_relative_transform.m_scale; }
 	
 
 private:
-	glm::mat4 calculate_model_matrix(Transform transform) const;
+	glm::mat4 calculate_model_matrix() const;
+	glm::mat4 calculate_model_matrix_from_transform(Transform transform) const;
 
-	World* world;
-	Mesh_object* owner;
-	Renderer renderer;
-	std::shared_ptr<Buffers> geometry;
-	Material material;
-	Transform relative_transform;
+	World* m_world;
+	Mesh_object* m_owner;
+	Renderer m_renderer;
+	std::shared_ptr<Buffers> m_geometry;
+	Material m_material;
+	Transform m_relative_transform;
 };
 

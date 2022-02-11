@@ -1,17 +1,19 @@
-#include "VertexArray.h"
-#include "VertexBuffer.h"
 
-vertex_array::vertex_array() 
+#include "Vertex_array.h"
+
+#include "Vertex_buffer.h"
+
+Vertex_array::Vertex_array()
 {
     glGenVertexArrays(1, &m_renderer_id);
 }
 
-vertex_array::~vertex_array() 
+Vertex_array::~Vertex_array()
 { 
     glDeleteVertexArrays(1, &m_renderer_id); 
 }
 
-void vertex_array::add_buffer(const vertex_buffer& vb, const vertex_buffer_layout& layout)
+void Vertex_array::add_buffer(const Vertex_buffer& vb, const Vertex_buffer_layout& layout)
 {
     bind();
     vb.bind();
@@ -23,10 +25,10 @@ void vertex_array::add_buffer(const vertex_buffer& vb, const vertex_buffer_layou
         glEnableVertexAttribArray(i);
         glVertexAttribPointer(
             i, element.count, element.type, element.normalized, layout.get_stride(), (const void*)offset);
-        offset += element.count * vertex_buffer_element::get_size_of_type(element.type);
+        offset += element.count * Vertex_buffer_elements::get_size_of_type(element.type);
     }
 }
 
-void vertex_array::bind() const { glBindVertexArray(m_renderer_id); }
+void Vertex_array::bind() const { glBindVertexArray(m_renderer_id); }
 
-void vertex_array::unbind() const { glBindVertexArray(0); }
+void Vertex_array::unbind() const { glBindVertexArray(0); }

@@ -1,14 +1,32 @@
 #include "Renderer.h"
-#include "GLFW/glfw3.h"
-#include "GLFW/glfw3native.h"
+
 #include "glew.h"
 
-void Renderer::draw(const vertex_array* va, const index_buffer* ib, const Material* material) const
+#include "GLFW/glfw3.h"
+#include "GLFW/glfw3native.h"
+
+void Renderer::draw(const Vertex_array* va, const Index_buffer* ib, const Material* material) const
 {
     material->bind();
     va->bind();
     ib->bind();
     glDrawElements(GL_TRIANGLES, (GLsizei)ib->get_count(), GL_UNSIGNED_INT, nullptr);
+
+    material->unbind();
+    va->unbind();
+    ib->unbind();
+}
+
+void Renderer::draw(const Vertex_array* va, const Index_buffer* ib, const Shader* shader) const
+{
+    shader->bind();
+    va->bind();
+    ib->bind();
+    glDrawElements(GL_TRIANGLES, (GLsizei)ib->get_count(), GL_UNSIGNED_INT, nullptr);
+
+    shader->unbind();
+    va->unbind();
+    ib->unbind();
 }
 
 void Renderer::clear() const

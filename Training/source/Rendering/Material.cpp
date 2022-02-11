@@ -1,42 +1,43 @@
 #include "Material.h"
 
-#include "glm/ext/matrix_transform.hpp"
 #include "glm/ext/matrix_clip_space.hpp"
+#include "glm/ext/matrix_transform.hpp"
+#include "Utility/Uniform_names.h"
 
-void Material::update_shader(glm::mat4 modelview, glm::mat4 projection) const
+void Material::update_model(glm::mat4 model) const
 {
-	shader->set_uniform_mat4f("modelview", modelview);
-	shader->set_uniform_mat4f("projection", projection);
+	m_shader->set_uniform_mat4f(MODEL_UNIFORM_NAME, model);
 }
 
-void Material::add_texture(std::shared_ptr<Texture> texture, unsigned int slot)
+void Material::add_texture(std::shared_ptr<Texture> texture, Texture_slot slot)
 {
-	has_texture = true;
-	textures[slot] = texture;
+	m_has_texture = true;
+	m_textures[slot] = texture;
 }
 
 void Material::bind() const
 {
-	shader->set_uniform4f("ambient", ambient.x, ambient.y, ambient.z, ambient.w);
-	shader->set_uniform4f("diffuse", diffuse.x, diffuse.y, diffuse.z, diffuse.w);
-	shader->set_uniform4f("specular", specular.x, specular.y, specular.z, specular.w);
-	shader->set_uniform1f("shininess", shininess);
+	m_shader->set_uniform4f(AMBIENT_UNIFORM_NAME, m_ambient.x, m_ambient.y, m_ambient.z, m_ambient.w);
+	m_shader->set_uniform4f(DIFFUSE_UNIFORM_NAME, m_diffuse.x, m_diffuse.y, m_diffuse.z, m_diffuse.w);
+	m_shader->set_uniform4f(SPECULAR_UNIFORM_NAME, m_specular.x, m_specular.y, m_specular.z, m_specular.w);
+	m_shader->set_uniform1f(SHININESS_UNIFORM_NAME, m_shininess);
 
-	for (auto texture : textures)
+	for (auto texture : m_textures)
 	{
 		texture.second->Bind(texture.first);
 	}
 
 	//shader->set_uniform1i("uses_texture", (int)has_texture);
-	shader->set_uniform1i("tex", 0);
-	shader->bind();
+	m_shader->set_uniform1i(TEXTURE_UNIFORM_NAME, (int)Texture_slot::texture);
+	m_shader->set_uniform1i(SHAODW_MAP_UNIFORM_NAME, (int)Texture_slot::shadow_map);
+	m_shader->bind();
 }
 
 void Material::unbind() const
 {
-	shader->unbind();
+	m_shader->unbind();
 
-	for (auto texture : textures)
+	for (auto texture : m_textures)
 	{
 		texture.second->UnBind();
 	}

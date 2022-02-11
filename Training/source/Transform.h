@@ -1,41 +1,41 @@
 #pragma once
 
-#include "glm/vec3.hpp"
+#include <glm/vec3.hpp>
 
 struct Rotator
 {
 	Rotator() = default;
 	Rotator(float pitch, float yaw, float roll)
-		: pitch(pitch), yaw(yaw), roll(roll) {}
+		: m_pitch(pitch), m_yaw(yaw), m_roll(roll) {}
 
-	float pitch = 0;
-	float yaw = 0;
-	float roll = 0;
+	float m_pitch = 0;
+	float m_yaw = 0;
+	float m_roll = 0;
 
 	Rotator operator- (const Rotator& other)
 	{
-		return Rotator(pitch - other.pitch, yaw - other.yaw, roll - other.roll);
+		return Rotator(m_pitch - other.m_pitch, m_yaw - other.m_yaw, m_roll - other.m_roll);
 	}
 	Rotator operator+ (const Rotator& other)
 	{
-		return Rotator(pitch + other.pitch, yaw + other.yaw, roll + other.roll);
+		return Rotator(m_pitch + other.m_pitch, m_yaw + other.m_yaw, m_roll + other.m_roll);
 	}
 	Rotator operator* (float value)
 	{
-		return Rotator(pitch * value, yaw * value, roll * value);
+		return Rotator(m_pitch * value, m_yaw * value, m_roll * value);
 	}
 
 	float difference(const Rotator& other)
 	{
-		float pitch_difference = pitch - other.pitch;
+		float pitch_difference = m_pitch - other.m_pitch;
 		if (pitch_difference < 0)
 			pitch_difference *= -1;
 
-		float yaw_difference = yaw - other.yaw;
+		float yaw_difference = m_yaw - other.m_yaw;
 		if (yaw_difference < 0)
 			yaw_difference *= -1;
 
-		float roll_difference = roll - other.roll;
+		float roll_difference = m_roll - other.m_roll;
 		if (roll_difference < 0)
 			roll_difference *= -1;
 
@@ -48,9 +48,9 @@ struct Transform
 {
 	Transform() = default;
 	Transform(glm::vec3 location, Rotator rotation, glm::vec3 scale)
-		: location(location), rotation(rotation), scale(scale) {}
+		: m_location(location), m_rotation(rotation), m_scale(scale) {}
 
-	glm::vec3 location = {0.0f, 0.0f, 0.0f};
-	Rotator rotation = {0.0f, 0.0f, 0.0f};
-	glm::vec3 scale = {1.0f, 1.0f, 1.0f};
+	glm::vec3 m_location = {0.0f, 0.0f, 0.0f};
+	Rotator m_rotation = {0.0f, 0.0f, 0.0f};
+	glm::vec3 m_scale = {1.0f, 1.0f, 1.0f};
 };

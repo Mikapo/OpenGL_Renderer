@@ -1,19 +1,23 @@
 #pragma once
 
-#include "Renderer.h"
 #include <memory>
+
+#include "Vertex_buffer.h"
+#include "Vertex_array.h"
+#include "Index_buffer.h"
+
 
 struct Buffers
 {
-	Buffers(const std::vector<float>& vertices, const std::vector<unsigned int>& indices, vertex_buffer_layout layout)
-		: vb(vertices.data(), sizeof(float) * vertices.size()), 
-		  ib(indices.data(), indices.size())
+	Buffers(const std::vector<float>& vertices, const std::vector<unsigned int>& indices, Vertex_buffer_layout layout)
+		: m_vb(vertices.data(), sizeof(float) * vertices.size()), 
+		  m_ib(indices.data(), indices.size())
 	{
-		va.add_buffer(vb, layout);
+		m_va.add_buffer(m_vb, layout);
 	}
 
-	vertex_buffer vb;
-	vertex_array va;
-	index_buffer ib;
+	Vertex_buffer m_vb;
+	Vertex_array m_va;
+	Index_buffer m_ib;
 };
 

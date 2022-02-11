@@ -1,86 +1,116 @@
 #include "World.h"
 #include "Rendering/Shader_compiler.h"
 #include "Rendering/Shader.h"
+#include "glm/ext/matrix_clip_space.hpp"
+#include "Utility/Uniform_names.h"
 
 void World::init()
 {
-  
+    m_shadow_map.init(1024, 1024);
 }
 
 void World::update(float deltatime)
 {
-    camera->update(deltatime);
+    m_camera->update(deltatime);
 }
 
 void World::render() const
 {
+    update_matrices();
     update_lighting();
+    render_shadow_map();
 
-    for (auto object : mesh_objects)
+    for (auto object : m_mesh_objects)
         object->render();
+}
+
+void World::render_shadow_map() const
+{
+    glViewport(0, 0, 1024, 1024);
+    m_shadow_map.bind_frame_buffer();
+    glClear(GL_DEPTH_BUFFER_BIT);
+
+    for (auto object : m_mesh_objects)
+        object->render_to_shadow_map(&m_shadow_map);
+
+    m_shadow_map.unbind_frame_buffer();
+    glViewport(0, 0, 1000, 1000);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_ALPHA_TEST);
+
+    m_shadow_map.bind_texture(Texture_slot::shadow_map);
 }
 
 void World::update_lighting() const
 {
-    std::vector<float> light_pos;
-    std::vector<float> light_color;
+    auto light = m_lights[0];
 
-    for (std::shared_ptr light : lights)
+    if (light)
     {
-        light_color.push_back(light->get_color().r);
-        light_color.push_back(light->get_color().g);
-        light_color.push_back(light->get_color().b);
-        light_color.push_back(light->get_color().a);
+        auto shaders = Shader_compiler::get_current_shaders();
+        for (auto shader_pair : shaders)
+        {
+            auto shader = shader_pair.second.lock();
+            shader->set_uniform4f(LIGHT_COLOR_UNIFORM_NAME, light->get_color().r, light->get_color().g, light->get_color().b, light->get_color().a);
 
-        glm::vec4 current_light_pos = get_camera_view_matrix() * glm::vec4(light->get_location(), 1);
-        light_pos.push_back(current_light_pos.x);
-        light_pos.push_back(current_light_pos.y);
-        light_pos.push_back(current_light_pos.z);
-        light_pos.push_back(current_light_pos.w);
+            glm::vec4 location = m_camera->get_view_matrix() * glm::vec4(light->get_forward_vector(), 0);
+            shader->set_uniform3f(LIGHT_DIRECTION_UNIFORM_NAME, location.x, location.y, location.z);
+
+            float near_plane = 0.001f, far_plane = 1000.0f;
+            glm::mat4 light_projection = glm::ortho(-1000.0f, 1000.0f, -1000.0f, 1000.0f, near_plane, far_plane);
+            glm::mat4 light_view = glm::lookAt(light->get_location(), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+            glm::mat4 light_space_matrix = light_projection * light_view;
+            shader->set_uniform_mat4f(LIGHT_SPACE_MATRIX_UNIFORM_NAME, light_space_matrix);
+        }
     }
+}
 
+void World::update_matrices() const
+{
     auto shaders = Shader_compiler::get_current_shaders();
-    for (auto shader : shaders)
+    for (auto shader_pair : shaders)
     {
-        std::shared_ptr shader_ptr = shader.second.lock();
-        shader_ptr->set_uniform4fv("lightpos", light_pos.size(), light_pos.data());
-        shader_ptr->set_uniform4fv("lightcolor", light_color.size(), light_color.data());
-        shader_ptr->set_uniform1i("lightamount", (int)lights.size());
+        auto shader = shader_pair.second.lock();
+        glm::mat4 view = get_camera_view_matrix();
+        glm::mat4 projection = get_camera_projection_matrix();
+
+        shader->set_uniform_mat4f(VIEW_UNIFORM_NAME, view);
+        shader->set_uniform_mat4f(PROJECTION_UNIFORM_NAME, projection);
     }
 }
 
 glm::mat4 World::get_camera_view_matrix() const
 {
-    if (camera)
-        return camera->get_view_matrix();
+    if (m_camera)
+        return m_camera->get_view_matrix();
     else
         return glm::mat4(1);
 }
 
 glm::mat4 World::get_camera_projection_matrix() const
 {
-    if (camera)
-        return camera->get_projection_matrix();
+    if (m_camera)
+        return m_camera->get_projection_matrix();
     else
         return glm::mat4(1);
 }
 
 std::shared_ptr<Camera> World::spawn_camera(Transform transform)
 {
-    this->camera.reset(new Camera(this, transform));
-    return this->camera;
+    this->m_camera.reset(new Camera(this, transform));
+    return this->m_camera;
 }
 
 std::shared_ptr<Mesh_object> World::spawn_mesh_object(Transform transform)
 {
-    mesh_objects.emplace_back(new Mesh_object(this));
-    mesh_objects.back()->set_transform(transform);
-    return mesh_objects.back();
+    m_mesh_objects.emplace_back(new Mesh_object(this));
+    m_mesh_objects.back()->set_transform(transform);
+    return m_mesh_objects.back();
 }
 
 std::shared_ptr<Light> World::spawn_light(Transform transform)
 {
-    lights.emplace_back(new Light(this));
-    lights.back()->set_transform(transform);
-    return lights.back();
+    m_lights.emplace_back(new Light(this));
+    m_lights.back()->set_transform(transform);
+    return m_lights.back();
 }

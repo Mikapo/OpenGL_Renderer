@@ -22,6 +22,6 @@ private:
 	static std::vector<float> get_vertices(aiMesh* mesh);
 	static std::vector<unsigned int> get_indices(const aiMesh* mesh);
 
-	static std::unordered_map<std::string, std::weak_ptr<Buffers>> buffer_stash;
+	static std::unordered_map<std::string, std::weak_ptr<Buffers>> m_buffer_stash;
 };
 
