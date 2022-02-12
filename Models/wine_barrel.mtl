@@ -1,4 +1,4 @@
-# Blender MTL File: 'wine_barrel_01_4k.blend'
+# Blender MTL File: 'None'
 # Material Count: 1
 
 newmtl wine_barrel_01
@@ -11,6 +11,4 @@ Ni 1.450000
 d 1.000000
 illum 2
 map_Bump D:\\Users\\AppData\\Local\\Temp\\Rar$DIa195792.11921\\textures\\wine_barrel_01_nor_gl_4k.exr
-map_Kd D:\\Users\\AppData\\Local\\Temp\\Rar$DIa195792.11921\\textures\\wine_barrel_01_diff_4k.jpg
-map_Ns D:\\Users\\AppData\\Local\\Temp\\Rar$DIa195792.11921\\textures\\wine_barrel_01_rough_4k.jpg
-refl D:\\Users\\AppData\\Local\\Temp\\Rar$DIa195792.11921\\textures\\wine_barrel_01_metal_4k.exr
+map_Kd D:\\Users\\AppData\\Local\\Temp\\Rar$DIa195792.11921\\textures\\wine_barrel_01_metal_4k.exr

@@ -1,0 +1,16 @@
+#pragma once
+
+#define MODEL_UNIFORM_NAME "u_model"
+#define VIEW_UNIFORM_NAME "u_view"
+#define PROJECTION_UNIFORM_NAME "u_projection"
+#define LIGHT_SPACE_MATRIX_UNIFORM_NAME "u_light_space_matrix"
+#define LIGHT_LOCATION_UNIFORM_NAME "u_light_loc"
+#define EYE_LOCATION_UNIFORM_NAME "u_eye_loc"
+#define LIGHT_COLOR_UNIFORM_NAME "u_light_color"
+#define AMBIENT_UNIFORM_NAME "u_ambient"
+#define DIFFUSE_UNIFORM_NAME "u_diffuse"
+#define SPECULAR_UNIFORM_NAME "u_specular"
+#define SHININESS_UNIFORM_NAME "u_shininess"
+#define USES_TEXTURE_UNIFORM_NAME "u_uses_texture"
+#define TEXTURE_UNIFORM_NAME "u_texture"
+#define SHAODW_MAP_UNIFORM_NAME "u_shadow_map"
