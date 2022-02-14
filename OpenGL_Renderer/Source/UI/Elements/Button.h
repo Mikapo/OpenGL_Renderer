@@ -1,21 +1,20 @@
 #pragma once
 
-#include "UI/UI_data.h"
-#include "UI_element.h"
+#include "UI_element_notify.h"
 
-#include <string>
-
-class Button : public UI_element
+class Button : public UI_element_notify<>
 {
 public:
-    Button(std::string name, UI_button_event button_event_on_clicked)
-        : m_name(name), m_button_event_on_clicked(button_event_on_clicked)
+    Button(const std::string& name)
+        : UI_element_notify(name)
     {
     }
 
-    void update() override;
+    void render() override;
+    void check_for_events() override;
 
 private:
-    std::string m_name;
-    UI_button_event m_button_event_on_clicked;
+
+    bool m_clicked = false;
+    bool m_last_checked_status = false;
 };

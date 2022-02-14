@@ -1,29 +1,37 @@
 #pragma once
 
 #include <memory>
+#include <string>
 #include <unordered_set>
 #include <vector>
 
-#include "UI_data.h"
-#include "Elements/Button.h"
+#include "UI/Elements/UI_element.h"
 
 struct GLFWwindow;
-class UI_observer;
 class UI
 {
 public:
-    void init(GLFWwindow* window);
-    void cleanup();
-    void update();
-    void add_observer(UI_observer* obs);
-    void remove_observer(UI_observer* obs);
+    UI(const std::string& name) : m_name(name) {}
+
+    void render();
+    void check_for_events();
+    void add_window_flags(ImGuiWindowFlags window_flag);
+    
+    template<typename T>
+    T* add_chidren(const std::string& name)
+    {
+        m_elements.emplace_back(new T(name));
+        return dynamic_cast<T*>(m_elements.back().get());
+    }
+
     bool is_hovered_by_mouse() const;
 
 private:
-    void setup_elements();
-    void update_elements();
+    void render_elements();
 
-    std::unordered_set<UI_observer*> m_observers;
+    ImGuiWindowFlags m_window_flags = 0;
+    std::string m_name;
     std::vector<std::unique_ptr<UI_element>> m_elements;
     bool m_hovered_by_mouse = false;
+    bool m_is_open = true;
 };

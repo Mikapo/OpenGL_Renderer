@@ -20,8 +20,8 @@ public:
 
 	void lerp_transform(float deltatime);
 
-	glm::mat4 get_view_matrix() const { return m_view; };
-	glm::mat4 get_projection_matrix() const { return m_projection; };
+	[[nodiscard]] glm::mat4 get_view_matrix() const { return m_view; };
+	[[nodiscard]] glm::mat4 get_projection_matrix() const { return m_projection; };
 
 	void set_transform(Transform new_transform) override;
 	void set_location(glm::vec3 new_location) override;
@@ -38,8 +38,8 @@ private:
 	void update_matrices();
 
 	Transform m_camera_transform;
-	glm::mat4 m_view;
-	glm::mat4 m_projection;
+	glm::mat4 m_view = glm::mat4(0);
+	glm::mat4 m_projection = glm::mat4(0);
 	float m_aspect_ratio = 1.0f;
 	float m_fow_angle = 30.0f;
 	float m_min_clip = 0.001f;

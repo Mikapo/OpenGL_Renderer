@@ -13,6 +13,8 @@ public:
 	Light(World* world) : Object(world) {}
 
 	glm::vec4 get_color() const { return m_color; }
+	void set_color(glm::vec4 new_color) { m_color = new_color; }
+
 	float get_ambient_intensity() const { return m_ambinent_intensity; }
 
 private:

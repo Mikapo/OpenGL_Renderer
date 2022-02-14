@@ -28,6 +28,8 @@ public:
     void start();
     void stop();
     void set_background_color(float R, float G, float B, float A) { m_background_color = {R, G, B, A}; }
+    void set_debug_messages_enabled(bool enabled);
+
     inline GLFWwindow* get_window() const { return m_window; }
     Dimensions get_window_dimensions() const;
     float get_delta_seconds() const;
@@ -42,17 +44,20 @@ protected:
     virtual void init();
     virtual void cleanup();
     virtual void update(float deltatime) {};
-    virtual void render() const {};
+    virtual void render() {};
 
-    Input_handler input_handler;
+    Input_handler m_input_handler;
 
 private:
-    void render_loop() const;
+    void setup_imgui();
+    void cleanup_imgui();
+    void render_loop();
     void update_deltatime();
 
     GLFWwindow* m_window = nullptr;
     std::string m_name;
     bool m_has_started = false;
+    bool m_debug_messages = true;
     Color m_background_color;
     std::chrono::steady_clock::time_point m_time_since_last_frame;
     float m_deltatime;

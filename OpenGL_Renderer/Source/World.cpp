@@ -9,7 +9,7 @@
 
 void World::init()
 {
-    m_shadow_map.init(1200, 1200);
+    m_shadow_map.init(1500, 1500);
 }
 
 void World::update(float deltatime)
@@ -66,11 +66,22 @@ void World::update_lighting() const
             location = m_camera->get_location();
             shader->set_uniform3f(EYE_LOCATION_UNIFORM_NAME, location.x, location.y, location.z);
 
-            float near_plane = 1.0f, far_plane = 100.0f;
-            glm::mat4 light_projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+            float near_plane = 1.0f, far_plane = 1000.0f;
             glm::mat4 light_view = glm::lookAt(light->get_location(), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+            glm::mat4 light_projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
             glm::mat4 light_space_matrix = light_projection * light_view;
             shader->set_uniform_mat4f(LIGHT_SPACE_MATRIX_UNIFORM_NAME, light_space_matrix);
+
+            shader->set_uniform1i(AMBIENT_ENABLED_UNIFORM_NAME, m_shader_settings.ambient);
+            shader->set_uniform1i(DIFFUSE_ENABLED_UNIFORM_NAME, m_shader_settings.diffuse);
+            shader->set_uniform1i(SPECULAR_ENABLED_UNIFORM_NAME, m_shader_settings.specular);
+            shader->set_uniform1i(SHADOW_ENABLED_UNIFORM_NAME, m_shader_settings.shadow);
+            shader->set_uniform1i(TEXTURE_ENABLED_UNIFORM_NAME, m_shader_settings.texture);
+
+            if (m_shader_settings.anti_alias)
+                glEnable(GL_MULTISAMPLE);
+            else
+                glDisable(GL_MULTISAMPLE);
         }
     }
 }

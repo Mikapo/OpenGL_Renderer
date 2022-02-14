@@ -1,8 +1,8 @@
-#include "Training_window.h"
+#include "Renderer_window.h"
 
 
 int main()
 {
-	Training_window window;
+	Renderer_window window;
 	window.start();
 }

@@ -13,6 +13,7 @@ public:
 	void render_to_shadow_map(const Shadow_map* shadow_map) const;
 	void render() const;
 	void add_mesh(std::shared_ptr<Buffers> geometry, Material material, Transform mesh_relative_transform = Transform());
+	void add_meshes(const std::vector<std::shared_ptr<Buffers>>& geometry, Material material, Transform mesh_relative_transform = Transform());
 
 private:
 	std::vector<std::unique_ptr<Mesh>> m_meshes;

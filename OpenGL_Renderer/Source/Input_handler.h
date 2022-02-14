@@ -14,12 +14,12 @@ public:
 
 	void add_key(int key, float value)
 	{
-		keys[key] = value;
+		m_keys[key] = value;
 	}
 
-	float current_value = 0;
-	int current_key = 0;
-	std::unordered_map<int, float> keys;
+	float m_current_value = 0;
+	int m_current_key = 0;
+	std::unordered_map<int, float> m_keys;
 };
 
 template<typename T>
@@ -27,16 +27,16 @@ struct Axis_mapping_function : public Axis_mapping
 {
 public:
 	Axis_mapping_function(T* obj, void (T::*f)(float)) 
-		: obj(obj), f(f) {}
+		: m_obj(obj), m_f(f) {}
 
 	void call(float value)
 	{
-		(obj->*f)(value);
+		(m_obj->*m_f)(value);
 	}
 
 private:
-	T* obj;
-	void (T::*f)(float);
+	T* m_obj;
+	void (T::*m_f)(float);
 };
 
 
@@ -48,7 +48,7 @@ public:
 		for (auto& value : m_axis_mappings)
 		{
 			auto* mapping = value.second.get();
-			mapping->call(mapping->current_value);
+			mapping->call(mapping->m_current_value);
 		}
 	}
 
@@ -58,13 +58,13 @@ public:
 		{
 			auto* mapping = value.second.get();
 
-			if (event == GLFW_RELEASE && key == mapping->current_key)
-				mapping->current_value = 0;
+			if (event == GLFW_RELEASE && key == mapping->m_current_key)
+				mapping->m_current_value = 0;
 
-			else if (event == GLFW_PRESS && mapping->keys.contains(key))
+			else if (event == GLFW_PRESS && mapping->m_keys.contains(key))
 			{
-				mapping->current_value = mapping->keys[key];
-				mapping->current_key = key;
+				mapping->m_current_value = mapping->m_keys[key];
+				mapping->m_current_key = key;
 			}
 		}
 	}

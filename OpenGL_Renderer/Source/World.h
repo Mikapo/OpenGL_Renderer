@@ -4,10 +4,20 @@
 #include <vector>
 
 #include "Object/Camera.h"
-#include "Object/light.h"
+#include "Object/Light.h"
 #include "Object/Mesh_object.h"
 #include "Object/Object.h"
 #include "Shadow_map.h"
+
+struct Shader_settings
+{
+	bool ambient = true;
+	bool diffuse = true;
+	bool specular = true;
+	bool shadow = true;
+	bool texture = true;
+	bool anti_alias = true;
+};
 
 class World
 {
@@ -28,6 +38,9 @@ public:
 
 	void update_aspect_ratio(float aspect_ratio) { m_camera->set_aspect_ratio(aspect_ratio); }
 
+	Shader_settings get_shader_settings() const { return m_shader_settings; };
+	void set_shader_settings(Shader_settings settings) { m_shader_settings = settings; }
+
 private:
 	void render_shadow_map() const;
 	void update_lighting() const;
@@ -37,5 +50,6 @@ private:
 	std::vector<std::shared_ptr<Light>> m_lights;
 	std::shared_ptr<Camera> m_camera;
 	Shadow_map m_shadow_map;
+	Shader_settings m_shader_settings;
 };
 

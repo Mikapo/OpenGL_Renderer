@@ -1,68 +1,48 @@
 #include "UI.h"
 
-#include "UI_observer.h"
-#include "Elements/Combo_box.h"
-
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_glfw.h"
 #include "ImGui/imgui_impl_opengl3.h"
+#include <GLFW/glfw3.h>
+#include <GLFW/glfw3native.h>
 
-void UI::init(GLFWwindow* window)
-{
-    // Setup Dear ImGui context
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO();
-    // Setup Platform/Renderer bindings
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init();
-    // Setup Dear ImGui style
-    ImGui::StyleColorsDark();
-    setup_elements();
-}
-
-void UI::cleanup()
-{
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
-}
-
-void UI::update()
+void UI::render()
 {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
-    ImGui::Begin("ImGui");
+    ImGui::Begin(m_name.c_str(), &m_is_open, m_window_flags);
     m_hovered_by_mouse = ImGui::IsAnyItemHovered() || ImGui::IsWindowHovered();
-    update_elements();
+    render_elements();
     ImGui::End();
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-}
-
-void UI::add_observer(UI_observer* obs)
-{
-    for (const auto& element : m_elements)
-        element->add_observer(obs);
-}
-
-void UI::remove_observer(UI_observer* obs)
-{
-    for (const auto& element : m_elements)
-        element->remove_observer(obs);
-}
-
-bool UI::is_hovered_by_mouse() const 
-{ return m_hovered_by_mouse; }
-
-void UI::setup_elements()
-{
+    GLFWwindow* backup_current_context = glfwGetCurrentContext();
+    ImGui::UpdatePlatformWindows();
+    ImGui::RenderPlatformWindowsDefault();
+    glfwMakeContextCurrent(backup_current_context);
    
 }
 
-void UI::update_elements()
+void UI::render_elements()
 {
     for (const auto& element : m_elements)
-        element->update();
+        element->render();
 }
+
+void UI::check_for_events()
+{
+    for (const auto& element : m_elements)
+        element->check_for_events();
+}
+
+void UI::add_window_flags(ImGuiWindowFlags window_flag)
+{
+    m_window_flags |= window_flag;
+}
+
+bool UI::is_hovered_by_mouse() const 
+{ 
+    return m_hovered_by_mouse; 
+}
+

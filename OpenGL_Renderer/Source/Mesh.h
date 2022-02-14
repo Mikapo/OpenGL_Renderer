@@ -15,8 +15,8 @@ class Shadow_map;
 class Mesh
 {
 public:
-	Mesh(World* world, std::shared_ptr<Buffers> geometry, Material material)
-		: m_world(world), m_geometry(geometry), m_material(material) {}
+	Mesh(World* world, Mesh_object* owner, std::shared_ptr<Buffers> geometry, Material material)
+		: m_world(world), m_owner(owner), m_geometry(geometry), m_material(material) {}
 
 	void render() const;
 	void render_to_shadow_map(const Shadow_map* shadow_map);
@@ -24,7 +24,6 @@ public:
 	void set_relative_location(glm::vec3 new_location) { m_relative_transform.m_location = new_location; }
 	void set_relative_scale(glm::vec3 new_scale) { m_relative_transform.m_scale = new_scale; }
 	void set_relative_transform(Transform new_transform) { m_relative_transform = new_transform; }
-	void set_owner(Mesh_object* new_owner) { m_owner = new_owner; }
 	glm::vec3 get_relative_location() { return m_relative_transform.m_location; }
 	Rotator get_relative_rotation() { return m_relative_transform.m_rotation; }
 	glm::vec3 get_relative_scale() { return m_relative_transform.m_scale; }
@@ -35,7 +34,7 @@ private:
 	glm::mat4 calculate_model_matrix_from_transform(Transform transform) const;
 
 	World* m_world;
-	Mesh_object* m_owner;
+	Mesh_object* m_owner = nullptr;
 	Renderer m_renderer;
 	std::shared_ptr<Buffers> m_geometry;
 	Material m_material;

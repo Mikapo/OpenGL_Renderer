@@ -105,12 +105,11 @@ void Shader::set_uniform1i(const std::string& name, int v1)
 
 void Shader::set_uniform_mat4f(const std::string& name, const glm::mat4& matrix) 
 {
-    bind();
     int location = get_uniform_location(name);
     if (location == -1)
         return;
 
-  
+    bind();
     glUniformMatrix4fv(location, 1, GL_FALSE, &matrix[0][0]);
     unbind();
 }

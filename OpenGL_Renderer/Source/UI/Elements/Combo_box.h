@@ -1,25 +1,23 @@
 #pragma once
 
+#include "UI_element_notify.h"
+
 #include <initializer_list>
 #include <string>
 #include <vector>
 
-#include "UI_element.h"
-
-class Combo_box : public UI_element
+class Combo_box : public UI_element_notify<const std::string&>
 {
 public:
-    Combo_box(std::string name, UI_combo_box_event ui_event, std::initializer_list<std::string> items) : m_name(name), m_ui_event(ui_event), m_items(items)
-    {
-        if (items.size() > 0)
-            m_current_item = items.begin()->c_str();
-    }
+    Combo_box(std::string name) : UI_element_notify(name) {}
 
-    void update() override;
+    void render() override;
+    void check_for_events() override;
+    void add_item(const std::string& new_item);
+    void set_current_item_index(unsigned int index);
 
 private:
-    UI_combo_box_event m_ui_event;
     std::vector<std::string> m_items;
     std::string m_current_item;
-    std::string m_name;
+    std::string m_last_checked_item;
 };

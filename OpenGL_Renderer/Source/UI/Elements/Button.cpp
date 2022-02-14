@@ -1,10 +1,17 @@
 #include "Button.h"
 
-void Button::update()
+void Button::render()
 {
-    if (ImGui::Button(m_name.c_str()))
+    m_clicked = ImGui::Button(get_name().c_str());
+}
+
+void Button::check_for_events()
+{
+    if (m_clicked != m_last_checked_status)
     {
-        for (auto observer : m_observers)
-            observer->on_button_event(m_button_event_on_clicked);
+        if(m_clicked)
+            notify();
+        m_last_checked_status = m_clicked;
     }
 }
+
