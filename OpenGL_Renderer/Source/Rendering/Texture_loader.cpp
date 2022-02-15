@@ -1,8 +1,8 @@
-#include "Texture_factory.h"
+#include "Texture_loader.h"
 
-std::unordered_map<std::string, std::weak_ptr<Texture>> Texture_factory::m_texture_cache;
+std::unordered_map<std::string, std::weak_ptr<Texture>> Texture_loader::m_texture_cache;
 
-std::shared_ptr<Texture> Texture_factory::get(const std::string& path)
+std::shared_ptr<Texture> Texture_loader::load(const std::string& path)
 {
 	if (!m_texture_cache[path].expired())
 		return m_texture_cache[path].lock();

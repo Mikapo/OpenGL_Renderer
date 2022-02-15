@@ -17,7 +17,7 @@ void Mesh_object::render() const
 
 void Mesh_object::add_mesh(std::shared_ptr<Buffers> geometry, Material material, Transform mesh_relative_transform)
 {
-	m_meshes.emplace_back(new Mesh(get_world(), this, geometry, material));
+	m_meshes.emplace_back(new Mesh(this, geometry, material));
 	m_meshes.back()->set_relative_transform(mesh_relative_transform);
 }
 

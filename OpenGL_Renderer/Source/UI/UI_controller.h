@@ -12,7 +12,8 @@ class UI_controller
 public:
     UI_controller(Renderer_window* owner) : m_owner(owner), m_ui("settings") {}
 
-    void init();
+    void init(GLFWwindow* window);
+    void cleanup();
     void render();
     void update();
 

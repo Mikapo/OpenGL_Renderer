@@ -1,8 +1,7 @@
 #include "Renderer_window.h"
 
-
-int main()
+int WinMain()
 {
-	Renderer_window window;
+	Renderer_window window(1000, 1000);
 	window.start();
 }

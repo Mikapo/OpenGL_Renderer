@@ -9,7 +9,8 @@
 
 void World::init()
 {
-    m_shadow_map.init(1500, 1500);
+    const int shadow_width = 1500, shadow_height = 1500;
+    m_shadow_map.init(shadow_width, shadow_height);
 }
 
 void World::update(float deltatime)
@@ -29,7 +30,7 @@ void World::render() const
 
 void World::render_shadow_map() const
 {
-    int shadow_width, shadow_height;
+    int shadow_width = 0, shadow_height = 0;
     m_shadow_map.get_shadow_resolution(shadow_width, shadow_height);
 
     m_shadow_map.bind_frame_buffer();
@@ -42,7 +43,7 @@ void World::render_shadow_map() const
 
     glCullFace(GL_BACK);
     m_shadow_map.unbind_frame_buffer();
-    glViewport(0, 0, 1000, 1000);
+    glViewport(0, 0, m_screen_width, m_screen_height);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     m_shadow_map.bind_texture(Texture_slot::shadow_map);
@@ -66,17 +67,20 @@ void World::update_lighting() const
             location = m_camera->get_location();
             shader->set_uniform3f(EYE_LOCATION_UNIFORM_NAME, location.x, location.y, location.z);
 
-            float near_plane = 1.0f, far_plane = 1000.0f;
             glm::mat4 light_view = glm::lookAt(light->get_location(), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-            glm::mat4 light_projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+
+            const float near_plane = 1.0f, far_plane = 1000.0f;
+            const float ortho_size = 10.0f;
+            glm::mat4 light_projection = glm::ortho(-ortho_size, ortho_size, -ortho_size, ortho_size, near_plane, far_plane);
+
             glm::mat4 light_space_matrix = light_projection * light_view;
             shader->set_uniform_mat4f(LIGHT_SPACE_MATRIX_UNIFORM_NAME, light_space_matrix);
 
-            shader->set_uniform1i(AMBIENT_ENABLED_UNIFORM_NAME, m_shader_settings.ambient);
-            shader->set_uniform1i(DIFFUSE_ENABLED_UNIFORM_NAME, m_shader_settings.diffuse);
-            shader->set_uniform1i(SPECULAR_ENABLED_UNIFORM_NAME, m_shader_settings.specular);
-            shader->set_uniform1i(SHADOW_ENABLED_UNIFORM_NAME, m_shader_settings.shadow);
-            shader->set_uniform1i(TEXTURE_ENABLED_UNIFORM_NAME, m_shader_settings.texture);
+            shader->set_uniform1i(AMBIENT_ENABLED_UNIFORM_NAME, static_cast<int>(m_shader_settings.ambient));
+            shader->set_uniform1i(DIFFUSE_ENABLED_UNIFORM_NAME, static_cast<int>(m_shader_settings.diffuse));
+            shader->set_uniform1i(SPECULAR_ENABLED_UNIFORM_NAME, static_cast<int>(m_shader_settings.specular));
+            shader->set_uniform1i(SHADOW_ENABLED_UNIFORM_NAME, static_cast<int>(m_shader_settings.shadow));
+            shader->set_uniform1i(TEXTURE_ENABLED_UNIFORM_NAME, static_cast<int>(m_shader_settings.texture));
 
             if (m_shader_settings.anti_alias)
                 glEnable(GL_MULTISAMPLE);
@@ -92,6 +96,10 @@ void World::update_matrices() const
     for (auto shader_pair : shaders)
     {
         auto shader = shader_pair.second.lock();
+
+        if (!shader)
+            continue;
+
         glm::mat4 view = get_camera_view_matrix();
         glm::mat4 projection = get_camera_projection_matrix();
 
@@ -104,22 +112,22 @@ glm::mat4 World::get_camera_view_matrix() const
 {
     if (m_camera)
         return m_camera->get_view_matrix();
-    else
-        return glm::mat4(1);
+ 
+    return glm::mat4(1);
 }
 
 glm::mat4 World::get_camera_projection_matrix() const
 {
     if (m_camera)
         return m_camera->get_projection_matrix();
-    else
-        return glm::mat4(1);
+   
+    return glm::mat4(1);
 }
 
 std::shared_ptr<Camera> World::spawn_camera(Transform transform)
 {
-    this->m_camera.reset(new Camera(this, transform));
-    return this->m_camera;
+    m_camera.reset(new Camera(this, transform));
+    return m_camera;
 }
 
 std::shared_ptr<Mesh_object> World::spawn_mesh_object(Transform transform)
@@ -134,4 +142,13 @@ std::shared_ptr<Light> World::spawn_light(Transform transform)
     m_lights.emplace_back(new Light(this));
     m_lights.back()->set_transform(transform);
     return m_lights.back();
+}
+
+void World::update_screen_size(int width, int height)
+{
+    m_screen_width = width;
+    m_screen_height = height;
+
+    if (m_camera)
+        m_camera->set_aspect_ratio(static_cast<float>(width) / static_cast<float>(height));
 }

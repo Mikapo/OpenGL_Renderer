@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Rendering\Renderer_item.cpp" />
     <ClCompile Include="Source\UI\Elements\Slider_angle.cpp" />
     <ClCompile Include="Source\UI\Elements\Child_window.cpp" />
     <ClCompile Include="Source\UI\Elements\Collapsing_header.cpp" />
@@ -170,7 +171,7 @@
     <ClCompile Include="source\Rendering\Shader.cpp" />
     <ClCompile Include="source\Rendering\Shader_compiler.cpp" />
     <ClCompile Include="source\Rendering\Texture.cpp" />
-    <ClCompile Include="source\Rendering\Texture_factory.cpp" />
+    <ClCompile Include="source\Rendering\Texture_loader.cpp" />
     <ClCompile Include="source\Rendering\Vertex_array.cpp" />
     <ClCompile Include="source\Rendering\Vertex_buffer.cpp" />
     <ClCompile Include="source\Renderer_window.cpp" />
@@ -192,6 +193,8 @@
     <ClCompile Include="Vendor\stb_image\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Rendering\Renderer_item.h" />
+    <ClInclude Include="Source\Rendering\Header.h" />
     <ClInclude Include="Source\UI\Elements\Slider_angle.h" />
     <ClInclude Include="Source\UI\Elements\Child_window.h" />
     <ClInclude Include="Source\UI\Elements\Collapsing_header.h" />
@@ -217,7 +220,7 @@
     <ClInclude Include="source\Rendering\Shader.h" />
     <ClInclude Include="source\Rendering\Shader_compiler.h" />
     <ClInclude Include="source\Rendering\Texture.h" />
-    <ClInclude Include="source\Rendering\Texture_factory.h" />
+    <ClInclude Include="source\Rendering\Texture_loader.h" />
     <ClInclude Include="source\Rendering\Vertex_array.h" />
     <ClInclude Include="source\Rendering\Vertex_buffer.h" />
     <ClInclude Include="source\Rendering\Vertex_buffer_layout.h" />

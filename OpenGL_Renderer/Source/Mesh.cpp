@@ -31,7 +31,7 @@ glm::mat4 Mesh::calculate_model_matrix() const
 	return world_model * relative_model;
 }
 
-glm::mat4 Mesh::calculate_model_matrix_from_transform(Transform transform) const
+glm::mat4 Mesh::calculate_model_matrix_from_transform(Transform transform)
 {
 	glm::mat4 identity = glm::mat4(1);
 

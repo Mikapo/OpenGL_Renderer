@@ -2,7 +2,7 @@
 
 void Color_picker::render()
 {
-	ImGui::ColorPicker4(get_name().c_str(), current_color);
+	ImGui::ColorPicker4(get_name().c_str(), current_color.data());
 }
 
 void Color_picker::check_for_events()

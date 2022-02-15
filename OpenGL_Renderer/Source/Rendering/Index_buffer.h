@@ -1,8 +1,10 @@
 #pragma once
 
+#include "Renderer_item.h"
+
 #include "Renderer.h"
 
-class Index_buffer
+class Index_buffer : public Renderer_item
 {
 public:
     Index_buffer(const void* data, size_t count);
@@ -13,6 +15,5 @@ public:
     inline size_t get_count() const { return m_count; }
 
 private:
-    unsigned int m_renderer_id;
     size_t m_count;
 };

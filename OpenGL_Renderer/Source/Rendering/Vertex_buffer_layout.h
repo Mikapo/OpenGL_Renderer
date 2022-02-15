@@ -7,16 +7,16 @@
 
 struct Vertex_buffer_elements
 {
-    Vertex_buffer_elements(unsigned int type, unsigned int count, unsigned char normalized)
-        : type(type), count(count), normalized(normalized)
+    Vertex_buffer_elements(unsigned int type, int count, unsigned char normalized)
+        : m_type(type), m_count(count), m_normalized(normalized)
     {
     }
 
-    unsigned int type;
-    unsigned int count;
-    unsigned char normalized;
+    unsigned int get_type() const { return m_type; }
+    unsigned int get_count() const { return m_count; }
+    unsigned char get_normalized() const { return m_normalized; }
 
-    static unsigned int get_size_of_type(unsigned int type)
+    static int get_size_of_type(unsigned int type)
     {
         switch (type)
         {
@@ -32,6 +32,12 @@ struct Vertex_buffer_elements
             return -1;
         }
     }
+
+private:
+    unsigned int m_type;
+    int m_count;
+    unsigned char m_normalized;
+
 };
 
 class Vertex_buffer_layout
@@ -47,19 +53,19 @@ public:
     template <>
     void push<float>(unsigned int count)
     {
-        m_elements.push_back({GL_FLOAT, count, GL_FALSE});
+        m_elements.emplace_back(GL_FLOAT, count, GL_FALSE);
         m_stride += count * Vertex_buffer_elements::get_size_of_type(GL_FLOAT);
     }
     template <>
     void push<unsigned int>(unsigned int count)
     {
-        m_elements.push_back({GL_UNSIGNED_INT, count, GL_FALSE});
+        m_elements.emplace_back(GL_UNSIGNED_INT, count, GL_FALSE);
         m_stride += count * Vertex_buffer_elements::get_size_of_type(GL_UNSIGNED_INT);
     }
     template <>
     void push<unsigned char>(unsigned int count)
     {
-        m_elements.push_back({GL_UNSIGNED_BYTE, count, GL_TRUE});
+        m_elements.emplace_back(GL_UNSIGNED_BYTE, count, GL_TRUE);
         m_stride += count * Vertex_buffer_elements::get_size_of_type(GL_UNSIGNED_BYTE);
     }
 
@@ -68,5 +74,5 @@ public:
 
 private:
     std::vector<Vertex_buffer_elements> m_elements;
-    unsigned int m_stride;
+    int m_stride;
 };

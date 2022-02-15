@@ -1,16 +1,17 @@
 #pragma once
 
-#include <glew.h>
+#include "Renderer_item.h"
 
-class Vertex_buffer
+#include <glew.h>
+#include <utility>
+
+class Vertex_buffer : public Renderer_item
 {
 public:
-    Vertex_buffer(const void* data, size_t size);
-    ~Vertex_buffer() { glDeleteBuffers(1, &m_renderer_id); }
+    Vertex_buffer(const void* data, GLsizeiptr size);
+    ~Vertex_buffer();
 
-    void bind() const { glBindBuffer(GL_ARRAY_BUFFER, m_renderer_id); };
-    void unbind() const;
+    void bind() const;
+    static void unbind();
 
-private:
-    unsigned int m_renderer_id;
 };

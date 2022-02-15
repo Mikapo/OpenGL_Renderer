@@ -44,8 +44,7 @@ void Window::init()
 
     /* Create a windowed mode window and its OpenGL context */
     glfwWindowHint(GLFW_SAMPLES, 4);
-    m_window = glfwCreateWindow(1000, 1000, m_name.c_str(), NULL, NULL);
-    glfwSetWindowSizeLimits(m_window, 1000, 1000, 1000, 1000);
+    m_window = glfwCreateWindow(m_width, m_height, m_name.c_str(), NULL, NULL);
 
     if (!m_window)
     {
@@ -61,31 +60,8 @@ void Window::init()
     glfwSwapInterval(1);
     update_deltatime();
     glfwSetWindowUserPointer(get_window(), this);
-    setup_imgui();
     setup_callbacks();
     m_logic_thread_exit_flag = false;
-}
-
-void Window::setup_imgui()
-{
-    // Setup Dear ImGui context
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO();
-    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
-    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
-    // Setup Platform/Renderer bindings
-    ImGui_ImplGlfw_InitForOpenGL(m_window, true);
-    ImGui_ImplOpenGL3_Init();
-    // Setup Dear ImGui style
-    ImGui::StyleColorsDark();
-
-    ImGuiStyle& style = ImGui::GetStyle();
-    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-    {
-        style.WindowRounding = 0.0f;
-        style.Colors[ImGuiCol_WindowBg].w = 1.0f;
-    }
 }
 
 static bool debug_messages = true;
@@ -122,7 +98,7 @@ void APIENTRY GLDebugMessageCallback(GLenum source, GLenum type, GLuint id,
         break;
 
     case GL_DEBUG_SOURCE_OTHER:
-        _source = "UNKNOWN";
+        _source = "OTHER";
         break;
 
     default:
@@ -199,16 +175,12 @@ void Window::set_debug_messages_enabled(bool enabled)
     debug_messages = enabled;
 }
 
-void Window::setup_callbacks()
+void Window::setup_callbacks() const
 {
     auto on_key = [](GLFWwindow* window, int key, int scancode, int action, int mods)
     {
-        if (action == GLFW_PRESS)
+        if (action == GLFW_PRESS || action == GLFW_RELEASE)
             static_cast<Window*>(glfwGetWindowUserPointer(window))->m_input_handler.on_key_event(key, action);
-
-        else if (action == GLFW_RELEASE)
-            static_cast<Window*>(glfwGetWindowUserPointer(window))->m_input_handler.on_key_event(key, action);
-
     };
     glfwSetKeyCallback(get_window(), on_key);
 
@@ -230,7 +202,9 @@ void Window::update_deltatime()
     auto time = high_resolution_clock::now();
     auto time_passed = time - m_time_since_last_frame;
     m_time_since_last_frame = time;
-    m_deltatime = time_passed.count() * 0.000000001f;
+
+    // converting to seconds
+    m_deltatime = static_cast<float>(time_passed.count()) * 0.000000001f;
 }
 
 void Window::logic_loop()
@@ -240,7 +214,8 @@ void Window::logic_loop()
     time_point<system_clock> frame_time = system_clock::now();
     while (!m_logic_thread_exit_flag)
     {
-        frame_time += milliseconds(1000 / 60);
+        const int64_t frames_per_second = 60;
+        frame_time += milliseconds(1000 / frames_per_second);
         m_input_handler.update();
         update_deltatime();
         update(m_deltatime);
@@ -254,11 +229,11 @@ void Window::render_loop()
 {
     while (!glfwWindowShouldClose(m_window) && m_has_started)
     {
+        glViewport(0, 0, m_width, m_height);
         glfwPollEvents();
         glDepthMask(GL_TRUE);
-        glClear(GL_DEPTH_BUFFER_BIT);
-        glClear(GL_COLOR_BUFFER_BIT);
-        glClearColor(m_background_color.R, m_background_color.B, m_background_color.G, m_background_color.A);
+        glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+        glClearColor(m_background_color.r, m_background_color.b, m_background_color.g, m_background_color.a);
         render();
         glfwSwapBuffers(m_window);
     }
@@ -268,14 +243,7 @@ void Window::cleanup()
 {
     m_logic_thread_exit_flag = true;
     m_logic_thread_handle.join();
-    cleanup_imgui();
+  
     glfwTerminate();
     m_window = nullptr;
-}
-
-void Window::cleanup_imgui()
-{
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
 }

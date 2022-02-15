@@ -17,6 +17,14 @@ public:
 		m_keys[key] = value;
 	}
 
+	float get_current_value() const { return m_current_value; }
+	void set_current_value(float value) { m_current_value = value; }
+	int get_current_key() const { return m_current_key; }
+	void set_current_key(int new_key) { m_current_key = new_key; }
+	const std::unordered_map<int, float>& get_keys() const { return m_keys; }
+
+private:
+
 	float m_current_value = 0;
 	int m_current_key = 0;
 	std::unordered_map<int, float> m_keys;
@@ -29,7 +37,7 @@ public:
 	Axis_mapping_function(T* obj, void (T::*f)(float)) 
 		: m_obj(obj), m_f(f) {}
 
-	void call(float value)
+	void call(float value) override
 	{
 		(m_obj->*m_f)(value);
 	}
@@ -48,7 +56,7 @@ public:
 		for (auto& value : m_axis_mappings)
 		{
 			auto* mapping = value.second.get();
-			mapping->call(mapping->m_current_value);
+			mapping->call(mapping->get_current_value());
 		}
 	}
 
@@ -58,13 +66,13 @@ public:
 		{
 			auto* mapping = value.second.get();
 
-			if (event == GLFW_RELEASE && key == mapping->m_current_key)
-				mapping->m_current_value = 0;
+			if (event == GLFW_RELEASE && key == mapping->get_current_key())
+				mapping->set_current_value(0.0f);
 
-			else if (event == GLFW_PRESS && mapping->m_keys.contains(key))
+			else if (event == GLFW_PRESS && mapping->get_keys().contains(key))
 			{
-				mapping->m_current_value = mapping->m_keys[key];
-				mapping->m_current_key = key;
+				mapping->set_current_value(mapping->get_keys().at(key));
+				mapping->set_current_key(key);
 			}
 		}
 	}

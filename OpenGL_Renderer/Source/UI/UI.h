@@ -13,6 +13,8 @@ class UI
 public:
     UI(const std::string& name) : m_name(name) {}
 
+    static void init(GLFWwindow* window);
+    static void cleanup();
     void render();
     void check_for_events();
     void add_window_flags(ImGuiWindowFlags window_flag);

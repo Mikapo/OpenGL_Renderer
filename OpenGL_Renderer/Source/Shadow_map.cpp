@@ -30,9 +30,9 @@ void Shadow_map::init(int shadow_width, int shadow_height)
 	m_has_been_initialized = true;
 }
 
-unsigned int Shadow_map::create_depth_map_texture(int shadow_width, int shadow_height) const
+unsigned int Shadow_map::create_depth_map_texture(int shadow_width, int shadow_height)
 {
-	unsigned int depth_map; 
+	unsigned int depth_map = 0; 
 	glGenTextures(1, &depth_map); 
 	glBindTexture(GL_TEXTURE_2D, depth_map);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, shadow_width, shadow_height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
@@ -45,9 +45,9 @@ unsigned int Shadow_map::create_depth_map_texture(int shadow_width, int shadow_h
 	return depth_map; 
 }
 
-unsigned int Shadow_map::create_frame_buffer(unsigned int depth_map) const
+unsigned int Shadow_map::create_frame_buffer(unsigned int depth_map)
 {
-	unsigned int frame_buffer;
+	unsigned int frame_buffer = 0;
 	glGenFramebuffers(1, &frame_buffer);
 	glBindFramebuffer(GL_FRAMEBUFFER, frame_buffer);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depth_map, 0);
@@ -62,7 +62,7 @@ void Shadow_map::bind_frame_buffer() const
 	glBindFramebuffer(GL_FRAMEBUFFER, m_frame_buffer);
 }
 
-void Shadow_map::unbind_frame_buffer() const
+void Shadow_map::unbind_frame_buffer()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
@@ -73,9 +73,9 @@ void Shadow_map::bind_texture(Texture_slot slot) const
 	glBindTexture(GL_TEXTURE_2D, m_depth_map);
 }
 
-void Shadow_map::unbind_texture() const
+void Shadow_map::unbind_texture()
 {
-	glBindTexture(GL_TEXTURE_2D, 9);
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void Shadow_map::update_model(glm::mat4 model) const

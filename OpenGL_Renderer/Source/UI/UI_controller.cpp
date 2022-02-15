@@ -16,50 +16,57 @@
 
 #include "Renderer_window.h"
 
-void UI_controller::init()
+void UI_controller::init(GLFWwindow* window)
 {
+	m_ui.init(window);
+
 	m_ui.add_window_flags(ImGuiWindowFlags_NoResize);
 	m_ui.add_window_flags(ImGuiWindowFlags_AlwaysVerticalScrollbar);
 
-	auto header = m_ui.add_chidren<Collapsing_header>("light settings");
-	auto light_settings = header->add_children<Child_window>("light_window");
+	Collapsing_header* header = m_ui.add_chidren<Collapsing_header>("light settings");
+	Child_window* light_settings = header->add_children<Child_window>("light_window");
 	light_settings->set_border(true);
 	light_settings->set_size(0, 400);
 	light_settings->set_id(2);
 
-	auto light_color = light_settings->add_children<Color_picker>("Light color");
+	Color_picker* light_color = light_settings->add_children<Color_picker>("Light color");
 	light_color->add_notify(this, &UI_controller::light_color_picker_on_change);
 
-	auto light_angle = light_settings->add_children<Slider_angle>("Light angle");
+	Slider_angle* light_angle = light_settings->add_children<Slider_angle>("Light angle");
 	light_angle->add_notify(this, &UI_controller::light_angle_on_change);
 	
 	setup_shader_settings();
 }
 
+void UI_controller::cleanup()
+{
+	m_ui.cleanup();
+}
+
 void UI_controller::setup_shader_settings()
 {
-	auto header = m_ui.add_chidren<Collapsing_header>("shader settings");
-	auto shader_settings = header->add_children<Child_window>("shader_window");
+	Collapsing_header* header = m_ui.add_chidren<Collapsing_header>("shader settings");
+	Child_window* shader_settings = header->add_children<Child_window>("shader_window");
 	shader_settings->set_size(0, 160);
 	shader_settings->set_border(true);
 	shader_settings->set_id(1);
 
-	auto ambient = shader_settings->add_children<Checkbox>("Ambient");
+	Checkbox* ambient = shader_settings->add_children<Checkbox>("Ambient");
 	ambient->add_notify(this, &UI_controller::ambient_checkbox_on_change);
 
-	auto diffuse = shader_settings->add_children<Checkbox>("Diffuse");
+	Checkbox* diffuse = shader_settings->add_children<Checkbox>("Diffuse");
 	diffuse->add_notify(this, &UI_controller::diffuse_checkbox_on_change);
 
-	auto specular = shader_settings->add_children<Checkbox>("Specular");
+	Checkbox* specular = shader_settings->add_children<Checkbox>("Specular");
 	specular->add_notify(this, &UI_controller::specular_checkbox_on_change);
 
-	auto shadow = shader_settings->add_children<Checkbox>("Shadow");
+	Checkbox* shadow = shader_settings->add_children<Checkbox>("Shadow");
 	shadow->add_notify(this, &UI_controller::shadow_checkbox_on_change);
 
-	auto texture = shader_settings->add_children<Checkbox>("Texture");
+	Checkbox* texture = shader_settings->add_children<Checkbox>("Texture");
 	texture->add_notify(this, &UI_controller::texture_checkbox_on_change);
 
-	auto anti_alias = shader_settings->add_children<Checkbox>("Anti aliasing");
+	Checkbox* anti_alias = shader_settings->add_children<Checkbox>("Anti aliasing");
 	anti_alias->add_notify(this, &UI_controller::anti_alias_checkbox_on_change);
 }
 

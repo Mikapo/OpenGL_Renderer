@@ -36,8 +36,8 @@ public:
 	void add_current_camera_local_offset(glm::vec3 offset) { m_camera->add_local_offset(offset); }
 	void add_current_camera_rotation_offset(Rotator offset) { m_camera->add_rotation_offset(offset); }
 
-	void update_aspect_ratio(float aspect_ratio) { m_camera->set_aspect_ratio(aspect_ratio); }
-
+	void update_screen_size(int width, int height);
+ 
 	Shader_settings get_shader_settings() const { return m_shader_settings; };
 	void set_shader_settings(Shader_settings settings) { m_shader_settings = settings; }
 
@@ -51,5 +51,6 @@ private:
 	std::shared_ptr<Camera> m_camera;
 	Shadow_map m_shadow_map;
 	Shader_settings m_shader_settings;
+	int m_screen_width = 1000, m_screen_height = 1000;
 };
 

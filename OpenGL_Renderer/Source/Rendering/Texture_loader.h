@@ -6,10 +6,10 @@
 
 #include "texture.h"
 
-class Texture_factory
+class Texture_loader
 {
 public:
-	static std::shared_ptr<Texture> get(const std::string& path);
+	static std::shared_ptr<Texture> load(const std::string& path);
 
 private:
 	static std::unordered_map<std::string, std::weak_ptr<Texture>> m_texture_cache;

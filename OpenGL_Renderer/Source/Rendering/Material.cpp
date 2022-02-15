@@ -24,7 +24,7 @@ void Material::bind() const
 
 	for (auto texture : m_textures)
 	{
-		texture.second->Bind(texture.first);
+		texture.second->bind(texture.first);
 	}
 
 	//shader->set_uniform1i("uses_texture", (int)has_texture);
@@ -39,6 +39,6 @@ void Material::unbind() const
 
 	for (auto texture : m_textures)
 	{
-		texture.second->UnBind();
+		texture.second->unbind();
 	}
 }

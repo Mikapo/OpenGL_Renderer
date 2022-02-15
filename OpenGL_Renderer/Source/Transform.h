@@ -12,20 +12,20 @@ struct Rotator
 	float m_yaw = 0;
 	float m_roll = 0;
 
-	Rotator operator- (const Rotator& other)
-	{
+	Rotator operator- (const Rotator& other) const
+	{ 
 		return Rotator(m_pitch - other.m_pitch, m_yaw - other.m_yaw, m_roll - other.m_roll);
 	}
-	Rotator operator+ (const Rotator& other)
+	Rotator operator+ (const Rotator& other) const
 	{
 		return Rotator(m_pitch + other.m_pitch, m_yaw + other.m_yaw, m_roll + other.m_roll);
 	}
-	Rotator operator* (float value)
+	Rotator operator* (float value) const
 	{
 		return Rotator(m_pitch * value, m_yaw * value, m_roll * value);
 	}
 
-	float difference(const Rotator& other)
+	float difference(const Rotator& other) const
 	{
 		float pitch_difference = m_pitch - other.m_pitch;
 		if (pitch_difference < 0)
