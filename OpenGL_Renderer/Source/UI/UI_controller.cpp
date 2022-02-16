@@ -7,9 +7,10 @@
 #include "UI/Elements/Combo_box.h"
 #include "UI/Elements/Checkbox.h"
 #include "UI/Elements/Color_picker.h"
-#include "UI/Elements/Collapsing_header.h"
-#include "UI/Elements/Child_window.h"
-#include "UI/Elements/Slider_angle.h"
+#include "UI/Elements/Parents/Collapsing_header.h"
+#include "UI/Elements/Parents/Child_window.h"
+#include "UI/Elements/Sliders/Slider_angle.h"
+#include "UI/Elements/Sliders/Slider_float.h"
 
 #include "Rendering/Shader_compiler.h"
 #include "Utility/Uniform_names.h"
@@ -20,13 +21,53 @@ void UI_controller::init(GLFWwindow* window)
 {
 	m_ui.init(window);
 
-	m_ui.add_window_flags(ImGuiWindowFlags_NoResize);
-	m_ui.add_window_flags(ImGuiWindowFlags_AlwaysVerticalScrollbar);
+	UI_window* ui_window = m_ui.add_window("Settings");
+	ui_window->add_flag(ImGuiWindowFlags_AlwaysAutoResize);
+	ui_window->add_flag(ImGuiWindowFlags_AlwaysVerticalScrollbar);
 
-	Collapsing_header* header = m_ui.add_chidren<Collapsing_header>("light settings");
-	Child_window* light_settings = header->add_children<Child_window>("light_window");
+	Child_window* resize_window = ui_window->add_children<Child_window>("test");
+	resize_window->set_id(3);
+	resize_window->set_size(300, 1);
+	resize_window->add_children<Checkbox>("test");
+
+	setup_camera_settings(ui_window);
+	setup_light_settings(ui_window);
+	setup_shader_settings(ui_window);
+}
+
+void UI_controller::setup_camera_settings(UI_window* window)
+{
+	Collapsing_header* header = window->add_children<Collapsing_header>("Camera_settings");
+	Child_window* camera_settings = header->add_children<Child_window>("camera´window");
+	camera_settings->set_id(5);
+	camera_settings->set_border(true);
+	camera_settings->set_size(300, 100);
+
+	Slider_float* fow = camera_settings->add_children<Slider_float>("fow");
+	fow->add_notify(this, &UI_controller::fow_on_change);
+	fow->set_max(10.0f);
+	fow->set_min(100.0f);
+	fow->set_value(30.0f);
+
+	Slider_float* min_clip = camera_settings->add_children<Slider_float>("min_clip");
+	min_clip->add_notify(this, &UI_controller::min_clip_on_change);
+	min_clip->set_max(40.0f);
+	min_clip->set_min(1.0f);
+	min_clip->set_value(1.0f);
+
+	Slider_float* max_clip = camera_settings->add_children<Slider_float>("max_clip");
+	max_clip->add_notify(this, &UI_controller::max_clip_on_change);
+	max_clip->set_max(40.0f);
+	max_clip->set_min(1.0f);
+	max_clip->set_value(40.0f);
+}
+
+void UI_controller::setup_light_settings(UI_window* window)
+{
+	Collapsing_header* header = window->add_children<Collapsing_header>("Light settings");
+	Child_window* light_settings = header->add_children<Child_window>("light window");
 	light_settings->set_border(true);
-	light_settings->set_size(0, 400);
+	light_settings->set_size(300, 350);
 	light_settings->set_id(2);
 
 	Color_picker* light_color = light_settings->add_children<Color_picker>("Light color");
@@ -34,20 +75,14 @@ void UI_controller::init(GLFWwindow* window)
 
 	Slider_angle* light_angle = light_settings->add_children<Slider_angle>("Light angle");
 	light_angle->add_notify(this, &UI_controller::light_angle_on_change);
-	
-	setup_shader_settings();
 }
 
-void UI_controller::cleanup()
-{
-	m_ui.cleanup();
-}
 
-void UI_controller::setup_shader_settings()
+void UI_controller::setup_shader_settings(UI_window* window)
 {
-	Collapsing_header* header = m_ui.add_chidren<Collapsing_header>("shader settings");
-	Child_window* shader_settings = header->add_children<Child_window>("shader_window");
-	shader_settings->set_size(0, 160);
+	Collapsing_header* header = window->add_children<Collapsing_header>("Shader settings");
+	Child_window* shader_settings = header->add_children<Child_window>("shader window");
+	shader_settings->set_size(300, 160);
 	shader_settings->set_border(true);
 	shader_settings->set_id(1);
 
@@ -78,6 +113,11 @@ void UI_controller::render()
 void UI_controller::update()
 {
 	m_ui.check_for_events();
+}
+
+void UI_controller::cleanup()
+{
+	m_ui.cleanup();
 }
 
 void UI_controller::ambient_checkbox_on_change(bool enabled)
@@ -136,6 +176,24 @@ void UI_controller::light_angle_on_change(float degrees)
 
 	auto light = m_owner->get_light();
 	light->set_location(glm::vec3(new_location) / new_location.w);
+}
+
+void UI_controller::fow_on_change(float degrees)
+{
+	std::shared_ptr<Camera> camera = m_owner->get_camera();
+	camera->set_fow_angle(degrees);
+}
+
+void UI_controller::min_clip_on_change(float value)
+{
+	std::shared_ptr<Camera> camera = m_owner->get_camera();
+	camera->set_min_clip(value);
+}
+
+void UI_controller::max_clip_on_change(float value)
+{
+	std::shared_ptr<Camera> camera = m_owner->get_camera();
+	camera->set_max_clip(value);
 }
 
 void UI_controller::light_color_picker_on_change(glm::vec4 color)

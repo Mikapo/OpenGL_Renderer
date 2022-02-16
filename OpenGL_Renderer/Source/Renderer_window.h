@@ -16,6 +16,7 @@ public:
 
     World* get_world() { return &m_world; }
     std::shared_ptr<Light> get_light() const { return m_light; }
+    std::shared_ptr<Camera> get_camera() const { return m_camera; }
 
 protected:
     void init() override;
@@ -39,4 +40,5 @@ private:
     UI_controller m_ui_controller;
 
     std::shared_ptr<Light> m_light;
+    std::shared_ptr<Camera> m_camera;
 };

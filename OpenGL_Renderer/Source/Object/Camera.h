@@ -42,7 +42,7 @@ private:
 	glm::mat4 m_projection = glm::mat4(0);
 	float m_aspect_ratio = 1.0f;
 	float m_fow_angle = 30.0f;
-	float m_min_clip = 0.001f;
+	float m_min_clip = 0.1f;
 	float m_max_clip = 300.0f;
 };
 

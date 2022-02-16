@@ -151,10 +151,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\UI\Elements\Sliders\Slider_float.cpp" />
+    <ClCompile Include="Source\UI\Elements\Sliders\Slider.cpp" />
     <ClCompile Include="Source\Rendering\Renderer_item.cpp" />
-    <ClCompile Include="Source\UI\Elements\Slider_angle.cpp" />
-    <ClCompile Include="Source\UI\Elements\Child_window.cpp" />
-    <ClCompile Include="Source\UI\Elements\Collapsing_header.cpp" />
+    <ClCompile Include="Source\UI\Elements\Sliders\Slider_angle.cpp" />
+    <ClCompile Include="Source\UI\Elements\Parents\Child_window.cpp" />
+    <ClCompile Include="Source\UI\Elements\Parents\Collapsing_header.cpp" />
     <ClCompile Include="Source\UI\Elements\Color_picker.cpp" />
     <ClCompile Include="Source\UI\Elements\Checkbox.cpp" />
     <ClCompile Include="source\Shadow_map.cpp" />
@@ -177,11 +179,12 @@
     <ClCompile Include="source\Renderer_window.cpp" />
     <ClCompile Include="source\UI\Elements\Button.cpp" />
     <ClCompile Include="source\UI\Elements\Combo_box.cpp" />
-    <ClCompile Include="Source\UI\Elements\UI_element_parent.cpp" />
+    <ClCompile Include="Source\UI\Elements\Parents\UI_element_parent.cpp" />
     <ClCompile Include="source\UI\UI.cpp" />
     <ClCompile Include="source\UI\UI_controller.cpp" />
     <ClCompile Include="source\Window.cpp" />
     <ClCompile Include="source\World.cpp" />
+    <ClCompile Include="Source\UI\Elements\Parents\UI_window.cpp" />
     <ClCompile Include="Vendor\glm\detail\glm.cpp" />
     <ClCompile Include="Vendor\ImGui\imgui.cpp" />
     <ClCompile Include="Vendor\ImGui\imgui_demo.cpp" />
@@ -193,12 +196,14 @@
     <ClCompile Include="Vendor\stb_image\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\UI\Elements\Sliders\Slider_float.h" />
+    <ClInclude Include="Source\UI\Elements\Sliders\Slider.h" />
     <ClInclude Include="Source\Rendering\Renderer_item.h" />
     <ClInclude Include="Source\Rendering\Header.h" />
-    <ClInclude Include="Source\UI\Elements\Slider_angle.h" />
-    <ClInclude Include="Source\UI\Elements\Child_window.h" />
-    <ClInclude Include="Source\UI\Elements\Collapsing_header.h" />
-    <ClInclude Include="Source\UI\Elements\UI_element_parent.h" />
+    <ClInclude Include="Source\UI\Elements\Sliders\Slider_angle.h" />
+    <ClInclude Include="Source\UI\Elements\Parents\Child_window.h" />
+    <ClInclude Include="Source\UI\Elements\Parents\Collapsing_header.h" />
+    <ClInclude Include="Source\UI\Elements\Parents\UI_element_parent.h" />
     <ClInclude Include="Source\UI\Elements\Color_picker.h" />
     <ClInclude Include="Source\UI\Elements\Checkbox.h" />
     <ClInclude Include="Source\UI\Elements\UI_element_notify.h" />
@@ -234,6 +239,7 @@
     <ClInclude Include="source\UI\UI_controller.h" />
     <ClInclude Include="source\Window.h" />
     <ClInclude Include="source\World.h" />
+    <ClInclude Include="Source\UI\Elements\Parents\UI_window.h" />
     <ClInclude Include="Vendor\glm\common.hpp" />
     <ClInclude Include="Vendor\glm\detail\compute_common.hpp" />
     <ClInclude Include="Vendor\glm\detail\compute_vector_relational.hpp" />

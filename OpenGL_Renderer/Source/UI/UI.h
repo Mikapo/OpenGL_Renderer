@@ -5,7 +5,7 @@
 #include <unordered_set>
 #include <vector>
 
-#include "UI/Elements/UI_element.h"
+#include "UI/Elements/Parents/UI_window.h"
 
 struct GLFWwindow;
 class UI
@@ -17,23 +17,15 @@ public:
     static void cleanup();
     void render();
     void check_for_events();
-    void add_window_flags(ImGuiWindowFlags window_flag);
-    
-    template<typename T>
-    T* add_chidren(const std::string& name)
-    {
-        m_elements.emplace_back(new T(name));
-        return dynamic_cast<T*>(m_elements.back().get());
-    }
-
+    UI_window* add_window(const std::string& name);
     bool is_hovered_by_mouse() const;
 
 private:
-    void render_elements();
+    void render_windows();
 
     ImGuiWindowFlags m_window_flags = 0;
     std::string m_name;
-    std::vector<std::unique_ptr<UI_element>> m_elements;
+    std::vector<std::unique_ptr<UI_window>> m_windows;
     bool m_hovered_by_mouse = false;
     bool m_is_open = true;
 };

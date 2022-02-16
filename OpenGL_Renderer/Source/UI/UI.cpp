@@ -37,34 +37,31 @@ void UI::render()
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
-    ImGui::Begin(m_name.c_str(), &m_is_open, m_window_flags);
-    m_hovered_by_mouse = ImGui::IsAnyItemHovered() || ImGui::IsWindowHovered();
-    render_elements();
-    ImGui::End();
+    render_windows();
     ImGui::Render();
+    ImGui::EndFrame();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     GLFWwindow* backup_current_context = glfwGetCurrentContext();
     ImGui::UpdatePlatformWindows();
     ImGui::RenderPlatformWindowsDefault();
     glfwMakeContextCurrent(backup_current_context);
-   
 }
 
-void UI::render_elements()
+void UI::render_windows()
 {
-    for (const auto& element : m_elements)
-        element->render();
+    for (const auto& window : m_windows)
+        window->render();
 }
 
 void UI::check_for_events()
 {
-    for (const auto& element : m_elements)
-        element->check_for_events();
+    for (const auto& window : m_windows)
+        window->check_for_events();
 }
 
-void UI::add_window_flags(ImGuiWindowFlags window_flag)
+UI_window* UI::add_window(const std::string& name)
 {
-    m_window_flags |= window_flag;
+    return m_windows.emplace_back(new UI_window(name)).get();
 }
 
 bool UI::is_hovered_by_mouse() const 

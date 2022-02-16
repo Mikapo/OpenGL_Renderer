@@ -35,6 +35,7 @@ public:
 
 	void add_current_camera_local_offset(glm::vec3 offset) { m_camera->add_local_offset(offset); }
 	void add_current_camera_rotation_offset(Rotator offset) { m_camera->add_rotation_offset(offset); }
+	std::shared_ptr<Camera> get_camera() { return m_camera; }
 
 	void update_screen_size(int width, int height);
  

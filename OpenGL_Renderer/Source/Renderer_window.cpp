@@ -93,7 +93,7 @@ void Renderer_window::init_objects()
 {
 	Transform camera_transform;
 	camera_transform.m_location = { 0.0f, -4.0f, 1.0f };
-	m_world.spawn_camera(camera_transform);
+	m_camera = m_world.spawn_camera(camera_transform);
 
 	init_ground();
 	init_furniture();

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "UI_element.h"
+#include "UI/Elements/UI_element.h"
 
 class UI_element_parent : public UI_element
 {
@@ -14,14 +14,12 @@ public:
 		return dynamic_cast<T*>(children.back().get());
 	}
 
+	void check_for_events() final;
+
 protected:
 	void render_children();
 	
 private:
-	void check_for_events() final;
-
 	std::vector<std::unique_ptr<UI_element>> children;
-
-
 };
 

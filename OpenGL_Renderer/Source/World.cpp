@@ -150,5 +150,10 @@ void World::update_screen_size(int width, int height)
     m_screen_height = height;
 
     if (m_camera)
-        m_camera->set_aspect_ratio(static_cast<float>(width) / static_cast<float>(height));
+    {
+        float aspect_ration = static_cast<float>(width) / static_cast<float>(height);
+        if (aspect_ration > 0.1f)
+            m_camera->set_aspect_ratio(static_cast<float>(width) / static_cast<float>(height));
+    }
+        
 }

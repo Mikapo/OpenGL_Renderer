@@ -27,8 +27,14 @@ public:
     void light_color_picker_on_change(glm::vec4 color);
     void light_angle_on_change(float degrees);
 
+    void fow_on_change(float degrees);
+    void min_clip_on_change(float value);
+    void max_clip_on_change(float value);
+
 private:
-    void setup_shader_settings();
+    void setup_camera_settings(UI_window* window);
+    void setup_light_settings(UI_window* window);
+    void setup_shader_settings(UI_window* window);
 
     Renderer_window* m_owner;
     UI m_ui;
